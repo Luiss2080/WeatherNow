@@ -1,53 +1,60 @@
+const esNumeroValido = (valor) => typeof valor === 'number' && !Number.isNaN(valor);
+
 // Formatear temperatura
 export const formatearTemperatura = (temperatura) => {
+  if (!esNumeroValido(temperatura)) return '--°C';
   return `${Math.round(temperatura)}°C`;
 };
 
 // Formatear porcentaje
 export const formatearPorcentaje = (valor) => {
+  if (!esNumeroValido(valor)) return '--%';
   return `${Math.round(valor)}%`;
 };
 
 // Formatear velocidad del viento
 export const formatearVelocidadViento = (velocidad) => {
+  if (!esNumeroValido(velocidad)) return '-- km/h';
   return `${Math.round(velocidad)} km/h`;
 };
 
 // Formatear presión
 export const formatearPresion = (presion) => {
+  if (!esNumeroValido(presion)) return '-- hPa';
   return `${presion} hPa`;
 };
 
 // Formatear visibilidad
 export const formatearVisibilidad = (visibilidad) => {
+  if (!esNumeroValido(visibilidad)) return '-- km';
   return `${(visibilidad / 1000).toFixed(1)} km`;
 };
 
 // Formatear hora desde timestamp
 export const formatearHora = (timestamp) => {
   const fecha = new Date(timestamp * 1000);
-  return fecha.toLocaleTimeString('es-ES', { 
-    hour: '2-digit', 
-    minute: '2-digit' 
+  return fecha.toLocaleTimeString('es-ES', {
+    hour: '2-digit',
+    minute: '2-digit'
   });
 };
 
 // Formatear fecha completa
 export const formatearFechaCompleta = (timestamp) => {
   const fecha = new Date(timestamp * 1000);
-  return fecha.toLocaleDateString('es-ES', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  return fecha.toLocaleDateString('es-ES', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   });
 };
 
 // Formatear fecha corta
 export const formatearFechaCorta = (timestamp) => {
   const fecha = new Date(timestamp * 1000);
-  return fecha.toLocaleDateString('es-ES', { 
-    weekday: 'short', 
+  return fecha.toLocaleDateString('es-ES', {
+    weekday: 'short',
     day: 'numeric',
     month: 'short'
   });
