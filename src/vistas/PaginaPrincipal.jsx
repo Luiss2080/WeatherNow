@@ -73,7 +73,6 @@ const PaginaPrincipal = () => {
   useEffect(() => {
     if (cargadoInicial.current || !ultimoLugar) return;
     cargadoInicial.current = true;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     cargarLugar(ultimoLugar);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ultimoLugar]);
