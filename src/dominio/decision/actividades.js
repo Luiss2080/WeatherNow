@@ -76,4 +76,5 @@ export const ACTIVIDADES = [
   }
 ];
 
-export const obtenerActividad = (id) => ACTIVIDADES.find((actividad) => actividad.id === id) || null;
+export const obtenerActividad = (id) =>
+  ACTIVIDADES.find((actividad) => actividad.id === id) || null;

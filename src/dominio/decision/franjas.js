@@ -17,7 +17,9 @@ export const condicionesDesdeClima = (datosClima, pronostico = []) => {
 
   const masCercana = pronostico.reduce((mejor, franja) => {
     if (!mejor) return franja;
-    return Math.abs(franja.fecha - referencia) < Math.abs(mejor.fecha - referencia) ? franja : mejor;
+    return Math.abs(franja.fecha - referencia) < Math.abs(mejor.fecha - referencia)
+      ? franja
+      : mejor;
   }, null);
 
   return {

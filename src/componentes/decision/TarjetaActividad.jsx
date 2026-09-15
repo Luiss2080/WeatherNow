@@ -39,8 +39,7 @@ const TarjetaActividad = ({ resultado, mejorFranja }) => {
       <p className="text-sm text-gray-600">{resultado.motivo}</p>
       {mejorFranja && (
         <p className="mt-2 text-xs text-gray-500">
-          Mejor franja:{' '}
-          {formatearHora(mejorFranja.franja.fecha, mejorFranja.franja.zonaHoraria)}
+          Mejor franja: {formatearHora(mejorFranja.franja.fecha, mejorFranja.franja.zonaHoraria)}
         </p>
       )}
       {resultado.datosAusentes.length > 0 && (
