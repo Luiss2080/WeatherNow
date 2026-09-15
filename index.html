@@ -4,14 +4,35 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2563eb" />
     <meta
       name="description"
-      content="WeatherNow - Consulta el clima en tiempo real con visualización dinámica"
+      content="WeatherNow Decide: convierte el clima en decisiones para tus actividades y tu salud (UV, calidad del aire), con favoritos y alertas."
     />
-    <title>WeatherNow - Clima en tiempo real</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="WeatherNow Decide" />
+    <meta
+      property="og:description"
+      content="¿Puedo salir a correr? ¿Debo protegerme del sol? Decisiones accionables a partir del clima."
+    />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <title>WeatherNow Decide — El clima convertido en decisiones</title>
   </head>
   <body>
     <div id="app"></div>
+    <noscript>
+      <h1>WeatherNow Decide</h1>
+      <p>
+        Convierte el clima en decisiones accionables para tus actividades (correr, ciclismo,
+        caminar, tender la ropa, lavar el auto) y tu salud (índice UV, calidad del aire y polen),
+        con lugares favoritos y alertas.
+      </p>
+      <p>Activa JavaScript para usar la aplicación.</p>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

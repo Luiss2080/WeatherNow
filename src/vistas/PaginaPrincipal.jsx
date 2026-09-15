@@ -16,6 +16,8 @@ import AnuncioDemo from '../componentes/planes/AnuncioDemo';
 import PanelAlertas from '../componentes/alertas/PanelAlertas';
 import Cargador from '../componentes/comunes/Cargador';
 import MensajeError from '../componentes/comunes/MensajeError';
+import BannerCache from '../componentes/comunes/BannerCache';
+import PanelMetricas from '../componentes/comunes/PanelMetricas';
 import { condicionesDesdeClima } from '../dominio/decision/franjas';
 import { evaluarAlerta } from '../dominio/alertas/evaluarAlerta';
 import { limiteAlertas, limiteFavoritos, mostrarPublicidad } from '../dominio/planes';
@@ -28,6 +30,7 @@ import { useAlertas } from '../hooks/useAlertas';
 import { usePreferencias } from '../hooks/usePreferencias';
 import { useUltimoLugar } from '../hooks/useUltimoLugar';
 import { useAire } from '../hooks/useAire';
+import { useInstantanea } from '../hooks/useInstantanea';
 
 // Los gráficos (Recharts) se cargan aparte para no inflar el bundle inicial.
 const GraficoTemperatura = lazy(() => import('../componentes/graficos/GraficoTemperatura'));
@@ -63,6 +66,7 @@ const PaginaPrincipal = () => {
     alternar: alternarAlerta
   } = useAlertas(limiteAlertas(preferencias.plan));
   const { ultimoLugar, recordar } = useUltimoLugar();
+  const { instantanea, recordar: recordarInstantanea } = useInstantanea();
   const cargadoInicial = useRef(false);
 
   const manejarBusqueda = async (ciudad) => {
@@ -108,10 +112,28 @@ const PaginaPrincipal = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [datosClima]);
 
+  // Guarda una instantánea para poder mostrar datos sin conexión.
+  useEffect(() => {
+    if (datosClima?.ciudad) {
+      recordarInstantanea({ datosClima, datosPronostico, datosAire, guardadoEn: Date.now() });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [datosClima, datosPronostico, datosAire]);
+
   const cargando = cargandoClima || cargandoPronostico;
   const errorMostrado = errorClima || errorPronostico || errorUbicacion;
 
-  const lugarActual = datosClima ? crearLugarDesdeClima(datosClima) : null;
+  // Si falla la red pero hay instantánea, se muestran los últimos datos.
+  const usandoCache = !datosClima && Boolean(instantanea) && Boolean(errorMostrado);
+  const climaMostrado = datosClima || (usandoCache ? instantanea.datosClima : null);
+  const pronosticoMostrado = datosClima
+    ? datosPronostico
+    : usandoCache
+      ? instantanea.datosPronostico || []
+      : [];
+  const aireMostrado = datosClima ? datosAire : usandoCache ? instantanea.datosAire || null : null;
+
+  const lugarActual = climaMostrado ? crearLugarDesdeClima(climaMostrado) : null;
   const esFavorito = lugarActual
     ? favoritos.some((favorito) => favorito.id === lugarActual.id)
     : false;
@@ -127,16 +149,22 @@ const PaginaPrincipal = () => {
         .filter((alerta) => alerta.activa && alerta.lugarId === lugarActual.id)
         .map((alerta) => ({
           alerta,
-          resultado: evaluarAlerta(alerta, { franjas: datosPronostico, aire: datosAire })
+          resultado: evaluarAlerta(alerta, { franjas: pronosticoMostrado, aire: aireMostrado })
         }))
         .filter((entrada) => entrada.resultado.cumplida)
     : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+      <a
+        href="#contenido-principal"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:font-semibold focus:text-blue-700"
+      >
+        Saltar al contenido
+      </a>
       <Encabezado />
 
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main id="contenido-principal" className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           {/* Búsqueda, unidades y favoritos */}
           <div className="mb-8 space-y-4">
