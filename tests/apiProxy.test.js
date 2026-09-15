@@ -45,7 +45,10 @@ describe('crearManejadorApi', () => {
   it('devuelve 404 en una ruta desconocida', async () => {
     const manejador = crearManejador({ clima: vi.fn(), pronostico: vi.fn() });
 
-    const resultado = await manejador.manejar({ ruta: '/desconocido', parametros: { q: 'Madrid' } });
+    const resultado = await manejador.manejar({
+      ruta: '/desconocido',
+      parametros: { q: 'Madrid' }
+    });
 
     expect(resultado.estado).toBe(404);
   });

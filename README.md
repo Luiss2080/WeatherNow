@@ -33,9 +33,9 @@ alergias?), con lugares favoritos y alertas.
 
 El estado y el plan no se describen aquí "de memoria": viven en las specs.
 
-| Spec                                                           | Qué es                                                            | Estado       |
-| -------------------------------------------------------------- | ----------------------------------------------------------------- | ------------ |
-| [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada   |
+| Spec                                                           | Qué es                                                            | Estado            |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------- |
+| [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada        |
 | [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | En curso (Fase A) |
 
 Artefactos SDD: [constitución](docs/constitution.md) ·
@@ -60,14 +60,20 @@ Lo que **hoy** funciona en un clon limpio (spec 001):
 - `ErrorBoundary` (un fallo de render no deja la pantalla en blanco) y a11y básica.
 - Bundle inicial ~293 kB (los gráficos se cargan bajo demanda).
 
-Todavía **no** está hecho (spec 002):
+Proxy implementado (spec 002, Fase A):
 
-- Backend proxy para no exponer la API key.
+- El navegador solo habla con `/api`; la clave vive en el servidor
+  (`OPENWEATHER_API_KEY`), **no en el bundle**.
+- Caché con TTL (clima 10 min, pronóstico 30 min) y rate limiting con cabeceras
+  `X-RateLimit-*`.
+
+Todavía **no** está hecho (spec 002, Fases B–F):
+
 - Veredictos por actividad, salud (UV/aire), favoritos y alertas.
 
-> ⚠️ **Secretos**: la clave se lee de `.env` (`VITE_API_KEY`), que **no se
-> commitea**. Aun así, las variables `VITE_*` viajan al navegador; la protección
-> real llegará con el proxy (spec 002, RF-14). Nunca commitees tu `.env`.
+> ⚠️ **Secretos**: la clave va en `.env` como `OPENWEATHER_API_KEY`, que **no se
+> commitea** y, al no llevar prefijo `VITE_`, **no se incluye en el bundle**.
+> Nunca commitees tu `.env`.
 
 ---
 
@@ -77,15 +83,18 @@ Todavía **no** está hecho (spec 002):
 # 1️⃣ Instalar dependencias
 npm install
 
-# 2️⃣ Configurar la clave de OpenWeather
-# Copia el ejemplo y rellena tu clave:
+# 2️⃣ Configurar la clave de OpenWeather (la usa el proxy)
+# Copia el ejemplo y rellena OPENWEATHER_API_KEY:
 #   cp .env.example .env
 # Obtén una gratis en: https://openweathermap.org/api
 
-# 3️⃣ Lanzar
+# 3️⃣ Lanzar (el proxy se monta automáticamente en /api con Vite)
 npm run dev
 # 🎉 http://localhost:5173
 ```
+
+Para servir el proxy por separado (p. ej. fuera de Vite): `npm run api` levanta
+`api/servidor.js` en http://localhost:8787/api.
 
 ---
 
@@ -116,10 +125,11 @@ npm run dev
 │   ├── constantes/    configuración · mensajes · iconos · colores
 │   └── vistas/        PaginaPrincipal
 ├── 📂 tests/          Vitest + Testing Library
+├── 📂 api/            proxy: configuracion · proxy · cache · limite · proveedores
 ├── 📂 docs/           constitution.md
 ├── 📂 specs/          001-remediacion-base · 002-weathernow-decide
 ├── 📄 .env.example    variables de entorno (sin secretos)
-├── 📄 vite.config.js  plugin React
+├── 📄 vite.config.js  plugin React + proxy /api (dev)
 ├── 📄 vitest.config.js  entorno de tests
 ├── 📄 eslint.config.js  ESLint (flat config)
 └── 📄 tsconfig.json   typecheck de .jsx
@@ -148,6 +158,7 @@ npm test              # Vitest (una pasada)
 npm run test:watch    # Vitest en modo watch
 npm run lint          # ESLint
 npm run format        # Prettier --write
+npm run api           # Proxy Node en http://localhost:8787/api
 npm run preview       # Previsualizar la build
 ```
 

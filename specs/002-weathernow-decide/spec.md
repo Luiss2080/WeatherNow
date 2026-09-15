@@ -145,6 +145,6 @@ a datos externos pasa por un backend proxy** propio.
 - **Motor configurable por el usuario (decidido)**: fuera del MVP (fase
   posterior).
 - [ABIERTA] Proveedor de UV, calidad del aire y polen: ¿OpenWeather Air Pollution
-  + UV Index API (free tier) o un agregador? (se decide en Fase D).
+  - UV Index API (free tier) o un agregador? (se decide en Fase D).
 - [ABIERTA] Modelo de precios: ¿suscripción mensual, pago único o patrocinios
   locales? (se decide en Fase E).

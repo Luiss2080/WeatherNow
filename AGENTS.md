@@ -22,6 +22,7 @@ src/
 ├── utilidades/    lógica pura (formateadores, transformadores, validadores)
 ├── constantes/    configuración, mensajes, iconos, colores
 └── vistas/        PaginaPrincipal
+api/               proxy (spec 002): configuracion · proxy · cache · limite · proveedores
 tests/             tests con Vitest + Testing Library
 docs/              constitución y guías
 specs/             specs, planes y tareas (SDD)
@@ -36,6 +37,8 @@ specs/             specs, planes y tareas (SDD)
 - Tests: `npm test` (Vitest, una pasada) · `npm run test:watch`
 - Lint: `npm run lint` (ESLint)
 - Formato: `npm run format` · comprobar con `npm run format:check`
+- Proxy (spec 002): `npm run api` (servidor Node en http://localhost:8787/api);
+  en desarrollo Vite monta el mismo proxy en `/api`.
 - Preview: `npm run preview`
 
 ## Estilo y convenciones
@@ -58,8 +61,9 @@ specs/             specs, planes y tareas (SDD)
   test en `tests/`.
 - No añadir dependencias sin justificarlo y acordarlo.
 - No hardcodear secretos ni claves; usa variables de entorno (`.env.example`).
+- El proxy (`api/`) es el único que conoce la clave del proveedor; el cliente
+  solo habla con `/api` y nunca recibe `OPENWEATHER_API_KEY`.
 - No editar `dist/` ni `node_modules/` (generados, ignorados por git).
-- No tocar el proxy/backend hasta que lo defina la spec 002.
 
 ## Al terminar cualquier tarea
 
