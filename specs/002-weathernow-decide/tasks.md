@@ -86,17 +86,22 @@
 
 ## Fase D — Salud
 
-- [ ] **TD1 — Panel UV** (RF-5)
-  - Riesgo UV con recomendación de protección.
+- [x] **TD1 — Panel UV** (RF-5)
+  - `src/dominio/salud/indiceUv.js` clasifica el UV y recomienda protección desde
+    nivel alto; `PanelSalud` lo muestra.
   - _Hecho cuando:_ UV alto muestra recomendación y UV ausente no la inventa.
+    **Verificado** en `tests/aire.test.js` y `tests/PanelSalud.test.jsx`.
 
-- [ ] **TD2 — Panel de calidad del aire** (RF-6)
-  - AQI con aviso para grupos sensibles.
-  - _Hecho cuando:_ AQI malo muestra aviso específico.
+- [x] **TD2 — Panel de calidad del aire** (RF-6)
+  - `src/dominio/salud/calidadAire.js` (US AQI) con aviso para grupos sensibles.
+  - _Hecho cuando:_ AQI malo muestra aviso específico. **Verificado**.
 
-- [ ] **TD3 — Integración en el motor** (RF-2, RF-7)
-  - UV y AQI entran en los veredictos cuando existen.
-  - _Hecho cuando:_ un día con UV alto baja el nivel de las actividades de sol.
+- [x] **TD3 — Integración en el motor** (RF-2, RF-7)
+  - `condicionesDesdeClima` recibe el aire y añade `uv`/`aqi`; las actividades
+    tienen umbral de AQI. Sin datos, se marca como ausente sin inventar.
+  - _Hecho cuando:_ un día con UV alto o aire dañino baja el nivel.
+    **Verificado** en `tests/saludIntegracion.test.js` y endpoint real
+    `/api/aire` (Open-Meteo, sin clave).
 
 ## Fase E — Alertas y negocio
 
