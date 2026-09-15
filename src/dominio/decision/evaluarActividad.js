@@ -5,33 +5,44 @@ import {
   ETIQUETAS_NIVEL,
   obtenerActividad
 } from './actividades';
+import {
+  UNIDADES,
+  formatearTemperatura,
+  formatearVelocidadViento
+} from '../../utilidades/formateadores';
 
 const esNumero = (valor) => typeof valor === 'number' && Number.isFinite(valor);
 
-const evaluarTemperatura = (valor, regla, etiqueta) => {
+const evaluarTemperatura = (valor, regla, etiqueta, unidades) => {
   if (!esNumero(valor)) return { ausente: etiqueta };
   if (valor < regla.minima || valor > regla.maxima) {
     return {
       nivel: NIVELES.NO_RECOMENDADO,
-      motivo: `Temperatura extrema (${Math.round(valor)}°)`
+      motivo: `Temperatura extrema (${formatearTemperatura(valor, unidades)})`
     };
   }
   if (valor < regla.minimaPrecaucion || valor > regla.maximaPrecaucion) {
     return {
       nivel: NIVELES.PRECAUCION,
-      motivo: `Temperatura poco cómoda (${Math.round(valor)}°)`
+      motivo: `Temperatura poco cómoda (${formatearTemperatura(valor, unidades)})`
     };
   }
   return { nivel: NIVELES.FAVORABLE };
 };
 
-const evaluarViento = (valor, regla, etiqueta) => {
+const evaluarViento = (valor, regla, etiqueta, unidades) => {
   if (!esNumero(valor)) return { ausente: etiqueta };
   if (valor > regla.noRecomendado) {
-    return { nivel: NIVELES.NO_RECOMENDADO, motivo: `Viento fuerte (${Math.round(valor)} km/h)` };
+    return {
+      nivel: NIVELES.NO_RECOMENDADO,
+      motivo: `Viento fuerte (${formatearVelocidadViento(valor, unidades)})`
+    };
   }
   if (valor > regla.precaucion) {
-    return { nivel: NIVELES.PRECAUCION, motivo: `Viento moderado (${Math.round(valor)} km/h)` };
+    return {
+      nivel: NIVELES.PRECAUCION,
+      motivo: `Viento moderado (${formatearVelocidadViento(valor, unidades)})`
+    };
   }
   return { nivel: NIVELES.FAVORABLE };
 };
@@ -70,26 +81,27 @@ const evaluarIndice = (valor, regla, etiqueta, descripcion) => {
 
 // Evalúa una actividad con las condiciones dadas. El nivel final es el peor de
 // sus variables; `datosAusentes` recoge lo que se solicitó y no llegó.
-export const evaluarActividad = (actividadId, condiciones = {}) => {
+export const evaluarActividad = (actividadId, condiciones = {}, opciones = {}) => {
   const actividad = obtenerActividad(actividadId);
   if (!actividad) return null;
+
+  const unidades = opciones.unidades || UNIDADES.METRICO;
 
   const evaluaciones = [
     evaluarTemperatura(
       condiciones.sensacionTermica ?? condiciones.temperatura,
       actividad.temperatura,
-      'sensación térmica'
+      'sensación térmica',
+      unidades
     ),
-    evaluarViento(condiciones.velocidadViento, actividad.viento, 'viento'),
+    evaluarViento(condiciones.velocidadViento, actividad.viento, 'viento', unidades),
     evaluarLluvia(condiciones.probabilidadLluvia, actividad.lluvia, 'lluvia'),
     evaluarIndice(condiciones.uv, actividad.uv, 'uv', 'Índice UV'),
     evaluarIndice(condiciones.aqi, actividad.aqi, 'aqi', 'Calidad del aire')
   ];
 
   const validas = evaluaciones.filter((evaluacion) => evaluacion.nivel);
-  const datosAusentes = evaluaciones
-    .filter((evaluacion) => evaluacion.ausente)
-    .map((e) => e.ausente);
+  const datosAusentes = evaluaciones.filter((evaluacion) => evaluacion.ausente).map((e) => e.ausente);
 
   if (validas.length === 0) {
     return {
@@ -130,5 +142,5 @@ export const evaluarActividad = (actividadId, condiciones = {}) => {
   };
 };
 
-export const evaluarTodas = (condiciones) =>
-  ACTIVIDADES.map((actividad) => evaluarActividad(actividad.id, condiciones));
+export const evaluarTodas = (condiciones, opciones = {}) =>
+  ACTIVIDADES.map((actividad) => evaluarActividad(actividad.id, condiciones, opciones));

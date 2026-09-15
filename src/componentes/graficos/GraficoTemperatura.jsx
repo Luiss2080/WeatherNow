@@ -7,11 +7,11 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
-import { formatearHora } from '../../utilidades/formateadores';
+import { UNIDADES, formatearHora, formatearTemperatura } from '../../utilidades/formateadores';
 import Tarjeta from '../comunes/Tarjeta';
 
 // Componente para mostrar gráfico de temperatura
-const GraficoTemperatura = ({ datos }) => {
+const GraficoTemperatura = ({ datos, unidades = UNIDADES.METRICO }) => {
   if (!datos || datos.length === 0) return null;
 
   const datosGrafico = datos.slice(0, 8).map((item) => ({
@@ -25,8 +25,14 @@ const GraficoTemperatura = ({ datos }) => {
         <LineChart data={datosGrafico}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="hora" />
-          <YAxis label={{ value: '°C', angle: -90, position: 'insideLeft' }} />
-          <Tooltip formatter={(value) => [`${value}°C`, 'Temperatura']} />
+          <YAxis
+            label={{
+              value: unidades === UNIDADES.IMPERIAL ? '°F' : '°C',
+              angle: -90,
+              position: 'insideLeft'
+            }}
+          />
+          <Tooltip formatter={(value) => [formatearTemperatura(value, unidades), 'Temperatura']} />
           <Line
             type="monotone"
             dataKey="temperatura"

@@ -2,12 +2,13 @@ import Tarjeta from '../comunes/Tarjeta';
 import TarjetaActividad from './TarjetaActividad';
 import { evaluarTodas } from '../../dominio/decision/evaluarActividad';
 import { mejorFranja } from '../../dominio/decision/franjas';
+import { UNIDADES } from '../../utilidades/formateadores';
 
 // Panel que traduce las condiciones actuales en decisiones por actividad.
-const PanelDecisiones = ({ condiciones, franjas = [] }) => {
+const PanelDecisiones = ({ condiciones, franjas = [], unidades = UNIDADES.METRICO }) => {
   if (!condiciones) return null;
 
-  const resultados = evaluarTodas(condiciones);
+  const resultados = evaluarTodas(condiciones, { unidades });
 
   return (
     <Tarjeta titulo="🧭 ¿Puedo hacerlo hoy?">

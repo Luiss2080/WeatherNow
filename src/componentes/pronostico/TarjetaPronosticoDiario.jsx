@@ -1,8 +1,12 @@
-import { formatearFechaCorta, formatearTemperatura } from '../../utilidades/formateadores';
+import {
+  UNIDADES,
+  formatearFechaCorta,
+  formatearTemperatura
+} from '../../utilidades/formateadores';
 import { obtenerIconoClima } from '../../constantes/iconosClima';
 
 // Componente para mostrar una tarjeta de pronóstico diario
-const TarjetaPronosticoDiario = ({ datos }) => {
+const TarjetaPronosticoDiario = ({ datos, unidades = UNIDADES.METRICO }) => {
   const iconoInfo = obtenerIconoClima(datos.items[0]?.icono || '01d');
 
   return (
@@ -13,9 +17,9 @@ const TarjetaPronosticoDiario = ({ datos }) => {
       <div className="text-5xl mb-3">{iconoInfo.icono}</div>
       <div className="space-y-1">
         <p className="text-lg font-bold text-gray-800">
-          {formatearTemperatura(datos.temperaturaMax)}
+          {formatearTemperatura(datos.temperaturaMax, unidades)}
         </p>
-        <p className="text-sm text-gray-600">{formatearTemperatura(datos.temperaturaMin)}</p>
+        <p className="text-sm text-gray-600">          {formatearTemperatura(datos.temperaturaMin, unidades)}</p>
       </div>
     </div>
   );

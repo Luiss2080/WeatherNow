@@ -1,9 +1,9 @@
 import { obtenerIconoClima } from '../../constantes/iconosClima';
-import { formatearTemperatura } from '../../utilidades/formateadores';
+import { UNIDADES, formatearTemperatura } from '../../utilidades/formateadores';
 import Tarjeta from '../comunes/Tarjeta';
 
 // Componente para mostrar la información principal del clima
-const TarjetaClimaPrincipal = ({ datosClima }) => {
+const TarjetaClimaPrincipal = ({ datosClima, unidades = UNIDADES.METRICO }) => {
   if (!datosClima) return null;
 
   const iconoInfo = obtenerIconoClima(datosClima.icono);
@@ -21,13 +21,13 @@ const TarjetaClimaPrincipal = ({ datosClima }) => {
 
       <div className="mb-2">
         <div className="text-6xl font-bold text-gray-800">
-          {formatearTemperatura(datosClima.temperatura)}
+          {formatearTemperatura(datosClima.temperatura, unidades)}
         </div>
         <p className="text-xl text-gray-600 capitalize mt-2">{datosClima.descripcion}</p>
       </div>
 
       <div className="mt-4 text-sm text-gray-600">
-        <p>Sensación térmica: {formatearTemperatura(datosClima.sensacionTermica)}</p>
+        <p>Sensación térmica: {formatearTemperatura(datosClima.sensacionTermica, unidades)}</p>
       </div>
     </Tarjeta>
   );

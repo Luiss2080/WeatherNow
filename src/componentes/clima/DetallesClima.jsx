@@ -1,4 +1,5 @@
 import {
+  UNIDADES,
   formatearPorcentaje,
   formatearVelocidadViento,
   formatearPresion,
@@ -9,7 +10,7 @@ import Tarjeta from '../comunes/Tarjeta';
 import ItemDetalle from './ItemDetalle';
 
 // Componente para mostrar detalles adicionales del clima
-const DetallesClima = ({ datosClima }) => {
+const DetallesClima = ({ datosClima, unidades = UNIDADES.METRICO }) => {
   if (!datosClima) return null;
 
   return (
@@ -23,18 +24,18 @@ const DetallesClima = ({ datosClima }) => {
         <ItemDetalle
           icono="💨"
           etiqueta="Viento"
-          valor={formatearVelocidadViento(datosClima.velocidadViento)}
+          valor={formatearVelocidadViento(datosClima.velocidadViento, unidades)}
         />
         <ItemDetalle icono="🌡️" etiqueta="Presión" valor={formatearPresion(datosClima.presion)} />
         <ItemDetalle
           icono="👁️"
           etiqueta="Visibilidad"
-          valor={formatearVisibilidad(datosClima.visibilidad)}
+          valor={formatearVisibilidad(datosClima.visibilidad, unidades)}
         />
         <ItemDetalle
           icono="🌡️"
           etiqueta="Mín/Máx"
-          valor={`${formatearTemperatura(datosClima.temperaturaMinima)} / ${formatearTemperatura(datosClima.temperaturaMaxima)}`}
+          valor={`${formatearTemperatura(datosClima.temperaturaMinima, unidades)} / ${formatearTemperatura(datosClima.temperaturaMaxima, unidades)}`}
         />
       </div>
     </Tarjeta>

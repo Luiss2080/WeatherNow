@@ -1,15 +1,33 @@
 const SEGUNDOS_A_MS = 1000;
 
+export const UNIDADES = {
+  METRICO: 'metric',
+  IMPERIAL: 'imperial'
+};
+
+const esImperial = (unidades) => unidades === UNIDADES.IMPERIAL;
+const unidadTemperatura = (unidades) => (esImperial(unidades) ? 'F' : 'C');
+const unidadVelocidad = (unidades) => (esImperial(unidades) ? 'mph' : 'km/h');
+const unidadDistancia = (unidades) => (esImperial(unidades) ? 'mi' : 'km');
+
 const esNumeroValido = (valor) => typeof valor === 'number' && !Number.isNaN(valor);
+
+export const convertirTemperatura = (celsius, unidades) =>
+  esImperial(unidades) ? (celsius * 9) / 5 + 32 : celsius;
+
+export const convertirVelocidad = (kmh, unidades) =>
+  esImperial(unidades) ? kmh * 0.621371 : kmh;
+
+export const convertirDistancia = (km, unidades) => (esImperial(unidades) ? km * 0.621371 : km);
 
 // Desplaza un timestamp UTC al huso horario de una ciudad (offset en segundos).
 const aFechaLocal = (timestamp, offsetSegundos = 0) =>
   new Date((timestamp + offsetSegundos) * SEGUNDOS_A_MS);
 
 // Formatear temperatura
-export const formatearTemperatura = (temperatura) => {
-  if (!esNumeroValido(temperatura)) return '--°C';
-  return `${Math.round(temperatura)}°C`;
+export const formatearTemperatura = (temperatura, unidades = UNIDADES.METRICO) => {
+  if (!esNumeroValido(temperatura)) return `--°${unidadTemperatura(unidades)}`;
+  return `${Math.round(convertirTemperatura(temperatura, unidades))}°${unidadTemperatura(unidades)}`;
 };
 
 // Formatear porcentaje
@@ -19,9 +37,9 @@ export const formatearPorcentaje = (valor) => {
 };
 
 // Formatear velocidad del viento
-export const formatearVelocidadViento = (velocidad) => {
-  if (!esNumeroValido(velocidad)) return '-- km/h';
-  return `${Math.round(velocidad)} km/h`;
+export const formatearVelocidadViento = (velocidad, unidades = UNIDADES.METRICO) => {
+  if (!esNumeroValido(velocidad)) return `-- ${unidadVelocidad(unidades)}`;
+  return `${Math.round(convertirVelocidad(velocidad, unidades))} ${unidadVelocidad(unidades)}`;
 };
 
 // Formatear presión
@@ -31,9 +49,10 @@ export const formatearPresion = (presion) => {
 };
 
 // Formatear visibilidad
-export const formatearVisibilidad = (visibilidad) => {
-  if (!esNumeroValido(visibilidad)) return '-- km';
-  return `${(visibilidad / 1000).toFixed(1)} km`;
+export const formatearVisibilidad = (visibilidad, unidades = UNIDADES.METRICO) => {
+  if (!esNumeroValido(visibilidad)) return `-- ${unidadDistancia(unidades)}`;
+  const km = visibilidad / 1000;
+  return `${convertirDistancia(km, unidades).toFixed(1)} ${unidadDistancia(unidades)}`;
 };
 
 // Formatear hora (timestamp UTC) en el huso de la ciudad
