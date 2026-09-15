@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect, beforeEach } from 'vitest';
 import { TIPOS_ALERTA } from '../src/dominio/alertas/condiciones';
 import { evaluarAlerta } from '../src/dominio/alertas/evaluarAlerta';
