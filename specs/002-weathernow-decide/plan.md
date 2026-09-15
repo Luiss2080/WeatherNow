@@ -27,22 +27,31 @@ Motor de decisión (módulo puro, compartido cliente/proxy)
 - _Alternativa descartada:_ key en `VITE_*` (incumple RF-14 y el principio 3 de
   la constitución).
 
-## 2. Estructura de carpetas prevista
+## 2. Estructura de carpetas (Fase A implementada)
 
 ```
-api/                          # proxy (Node/serverless)
-  index.js                    # router /api/clima, /api/aire, /api/uv
-  proveedores/                # clientes por proveedor + normalización
-  cache.js                    # caché con TTL
-  limite.js                   # rate limiting
+api/                          # proxy (Node)
+  configuracion.js            # entorno + TTL + límites
+  proxy.js                    # núcleo: rate limit → validación → caché → proveedor
+  cache.js                    # caché en memoria con TTL (reloj inyectable)
+  limite.js                   # rate limiting por cliente
+  errores.js                  # códigos y estados de error
+  proveedores/openweather.js  # cliente del proveedor (clave solo aquí)
+  pluginVite.js               # middleware de desarrollo en /api
+  servidor.js                 # servidor Node para producción (puerto 8787)
 src/
-  dominio/decision/           # motor de decisión (puro)
+  dominio/decision/           # motor de decisión (puro) — Fase B
     actividades.js            # umbrales por actividad
     evaluarActividad.js       # clima + aire + uv -> veredicto + motivo
     mejorFranja.js
   servicios/                  # cliente del proxy (no del proveedor)
   almacenamiento/             # favoritos, alertas y caché en localStorage
 ```
+
+> **Normalización**: en Fase A el proxy reenvía la respuesta del proveedor y la
+> normalización de campos vive en `src/utilidades/transformadores.js` (lado
+> cliente), que ya tolera campos ausentes. Moverla al proxy es una mejora
+> futura, no un requisito de RF-14..16.
 
 ## 3. Modelo de datos (cliente)
 

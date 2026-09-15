@@ -134,15 +134,17 @@ a datos externos pasa por un backend proxy** propio.
 - El proxy no filtra la clave y responde desde caché en la segunda petición.
 - Auditoría de coste: X llamadas/día estimadas dentro del plan gratuito.
 
-## Dudas abiertas
+## Dudas resueltas y abiertas
 
-- [NECESITA ACLARACIÓN] Proveedor de UV, calidad del aire y polen: ¿OpenWeather
-  Air Pollution + UV Index API (free tier) o un agregador?
-- [NECESITA ACLARACIÓN] Canal de alertas del MVP: ¿Web Push, email o aviso
-  in-app al abrir?
-- [NECESITA ACLARACIÓN] Modelo de precios: ¿suscripción mensual, pago único o
-  patrocinios locales?
-- [NECESITA ACLARACIÓN] Plataforma de despliegue del proxy: ¿Vercel/Netlify
-  Functions o un servicio Node propio?
-- [NECESITA ACLARACIÓN] ¿El motor de decisión debe ser configurable por el
-  usuario (umbrales propios) en el MVP o en una fase posterior?
+- **Plataforma del proxy (resuelta)**: middleware de Vite en desarrollo
+  (`api/pluginVite.js`) y servidor Node (`api/servidor.js`) para despliegues
+  Node. El núcleo `crearManejadorApi` es agnóstico, por lo que puede envolverse
+  en una función serverless (Vercel/Netlify) sin reescribirlo.
+- **Canal de alertas del MVP (decidido)**: aviso **in-app**; Web Push queda como
+  mejora posterior supeditada a un scheduler en el proxy.
+- **Motor configurable por el usuario (decidido)**: fuera del MVP (fase
+  posterior).
+- [ABIERTA] Proveedor de UV, calidad del aire y polen: ¿OpenWeather Air Pollution
+  + UV Index API (free tier) o un agregador? (se decide en Fase D).
+- [ABIERTA] Modelo de precios: ¿suscripción mensual, pago único o patrocinios
+  locales? (se decide en Fase E).
