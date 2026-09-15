@@ -6,8 +6,10 @@ import TarjetaClimaPrincipal from '../componentes/clima/TarjetaClimaPrincipal';
 import DetallesClima from '../componentes/clima/DetallesClima';
 import InfoSolarPrincipal from '../componentes/clima/InfoSolarPrincipal';
 import ListaPronostico from '../componentes/pronostico/ListaPronostico';
+import PanelDecisiones from '../componentes/decision/PanelDecisiones';
 import Cargador from '../componentes/comunes/Cargador';
 import MensajeError from '../componentes/comunes/MensajeError';
+import { condicionesDesdeClima } from '../dominio/decision/franjas';
 import { useClima } from '../hooks/useClima';
 import { usePronostico } from '../hooks/usePronostico';
 import { useGeolocalizacion } from '../hooks/useGeolocalizacion';
@@ -92,6 +94,12 @@ const PaginaPrincipal = () => {
 
               {/* Detalles del clima */}
               <DetallesClima datosClima={datosClima} />
+
+              {/* Decisiones por actividad (spec 002, Fase B) */}
+              <PanelDecisiones
+                condiciones={condicionesDesdeClima(datosClima, datosPronostico)}
+                franjas={datosPronostico}
+              />
 
               {/* Pronóstico de 5 días */}
               {pronosticoPorDias.length > 0 && (
