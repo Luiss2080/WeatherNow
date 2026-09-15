@@ -11,8 +11,9 @@ export const condicionesDesdeFranja = (franja) => ({
   probabilidadLluvia: franja.probabilidadLluvia
 });
 
-// Combina el clima actual con la probabilidad de lluvia de la franja más cercana.
-export const condicionesDesdeClima = (datosClima, pronostico = []) => {
+// Combina el clima actual con la probabilidad de lluvia de la franja más cercana
+// y, si hay datos de aire, el UV y el índice de calidad del aire.
+export const condicionesDesdeClima = (datosClima, pronostico = [], aire = null) => {
   const referencia = datosClima?.timestamp || 0;
 
   const masCercana = pronostico.reduce((mejor, franja) => {
@@ -26,7 +27,9 @@ export const condicionesDesdeClima = (datosClima, pronostico = []) => {
     temperatura: datosClima?.temperatura,
     sensacionTermica: datosClima?.sensacionTermica,
     velocidadViento: datosClima?.velocidadViento,
-    probabilidadLluvia: masCercana ? masCercana.probabilidadLluvia : null
+    probabilidadLluvia: masCercana ? masCercana.probabilidadLluvia : null,
+    uv: aire ? aire.uv : undefined,
+    aqi: aire ? aire.indiceAire : undefined
   };
 };
 

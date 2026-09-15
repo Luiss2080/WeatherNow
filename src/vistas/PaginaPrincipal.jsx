@@ -7,6 +7,7 @@ import DetallesClima from '../componentes/clima/DetallesClima';
 import InfoSolarPrincipal from '../componentes/clima/InfoSolarPrincipal';
 import ListaPronostico from '../componentes/pronostico/ListaPronostico';
 import PanelDecisiones from '../componentes/decision/PanelDecisiones';
+import PanelSalud from '../componentes/salud/PanelSalud';
 import ListaFavoritos from '../componentes/favoritos/ListaFavoritos';
 import BotonFavorito from '../componentes/favoritos/BotonFavorito';
 import SelectorUnidades from '../componentes/favoritos/SelectorUnidades';
@@ -20,6 +21,7 @@ import { useGeolocalizacion } from '../hooks/useGeolocalizacion';
 import { useFavoritos } from '../hooks/useFavoritos';
 import { usePreferencias } from '../hooks/usePreferencias';
 import { useUltimoLugar } from '../hooks/useUltimoLugar';
+import { useAire } from '../hooks/useAire';
 
 // Los gráficos (Recharts) se cargan aparte para no inflar el bundle inicial.
 const GraficoTemperatura = lazy(() => import('../componentes/graficos/GraficoTemperatura'));
@@ -43,13 +45,20 @@ const PaginaPrincipal = () => {
     obtenerPronosticoPorUbicacion
   } = usePronostico();
   const { error: errorUbicacion, obtenerUbicacion } = useGeolocalizacion();
+  const { datosAire, cargarAire } = useAire();
   const { preferencias, cambiarUnidades } = usePreferencias();
   const { favoritos, agregar, eliminar, reordenar } = useFavoritos();
   const { ultimoLugar, recordar } = useUltimoLugar();
   const cargadoInicial = useRef(false);
 
   const manejarBusqueda = async (ciudad) => {
-    await Promise.allSettled([obtenerClima(ciudad), obtenerPronosticoExtendido(ciudad)]);
+    const [clima] = await Promise.allSettled([
+      obtenerClima(ciudad),
+      obtenerPronosticoExtendido(ciudad)
+    ]);
+    if (clima.status === 'fulfilled' && clima.value?.coordenadas) {
+      cargarAire(clima.value.coordenadas.latitud, clima.value.coordenadas.longitud);
+    }
   };
 
   const cargarLugar = async (lugar) => {
@@ -57,6 +66,7 @@ const PaginaPrincipal = () => {
       obtenerClimaPorUbicacion(lugar.lat, lugar.lon),
       obtenerPronosticoPorUbicacion(lugar.lat, lugar.lon)
     ]);
+    cargarAire(lugar.lat, lugar.lon);
   };
 
   const manejarUbicacionActual = async () => {
@@ -66,6 +76,7 @@ const PaginaPrincipal = () => {
         obtenerClimaPorUbicacion(coords.latitud, coords.longitud),
         obtenerPronosticoPorUbicacion(coords.latitud, coords.longitud)
       ]);
+      cargarAire(coords.latitud, coords.longitud);
     }
   };
 
@@ -153,10 +164,13 @@ const PaginaPrincipal = () => {
 
               {/* Decisiones por actividad (spec 002, Fase B) */}
               <PanelDecisiones
-                condiciones={condicionesDesdeClima(datosClima, datosPronostico)}
+                condiciones={condicionesDesdeClima(datosClima, datosPronostico, datosAire)}
                 franjas={datosPronostico}
                 unidades={preferencias.unidades}
               />
+
+              {/* Salud: UV, calidad del aire y polen (spec 002, Fase D) */}
+              <PanelSalud aire={datosAire} />
 
               {/* Pronóstico de 5 días */}
               {pronosticoPorDias.length > 0 && (

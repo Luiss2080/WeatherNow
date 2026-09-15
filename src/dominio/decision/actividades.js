@@ -27,7 +27,8 @@ export const ACTIVIDADES = [
     temperatura: { minima: -2, maxima: 30, minimaPrecaucion: 5, maximaPrecaucion: 24 },
     viento: { precaucion: 30, noRecomendado: 45 },
     lluvia: { precaucion: 40, noRecomendado: 70 },
-    uv: { precaucion: 6, noRecomendado: 9 }
+    uv: { precaucion: 6, noRecomendado: 9 },
+    aqi: { precaucion: 100, noRecomendado: 150 }
   },
   {
     id: 'ciclismo',
@@ -36,7 +37,8 @@ export const ACTIVIDADES = [
     temperatura: { minima: 0, maxima: 32, minimaPrecaucion: 8, maximaPrecaucion: 26 },
     viento: { precaucion: 25, noRecomendado: 40 },
     lluvia: { precaucion: 30, noRecomendado: 60 },
-    uv: { precaucion: 6, noRecomendado: 9 }
+    uv: { precaucion: 6, noRecomendado: 9 },
+    aqi: { precaucion: 100, noRecomendado: 150 }
   },
   {
     id: 'caminar',
@@ -45,7 +47,8 @@ export const ACTIVIDADES = [
     temperatura: { minima: -5, maxima: 35, minimaPrecaucion: 4, maximaPrecaucion: 30 },
     viento: { precaucion: 35, noRecomendado: 55 },
     lluvia: { precaucion: 50, noRecomendado: 80 },
-    uv: { precaucion: 7, noRecomendado: 10 }
+    uv: { precaucion: 7, noRecomendado: 10 },
+    aqi: { precaucion: 150, noRecomendado: 200 }
   },
   {
     id: 'evento',
@@ -54,7 +57,8 @@ export const ACTIVIDADES = [
     temperatura: { minima: 5, maxima: 34, minimaPrecaucion: 12, maximaPrecaucion: 28 },
     viento: { precaucion: 25, noRecomendado: 40 },
     lluvia: { precaucion: 30, noRecomendado: 60 },
-    uv: { precaucion: 7, noRecomendado: 10 }
+    uv: { precaucion: 7, noRecomendado: 10 },
+    aqi: { precaucion: 150, noRecomendado: 200 }
   },
   {
     id: 'ropa',

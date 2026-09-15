@@ -24,12 +24,15 @@ export const useClima = () => {
 
     try {
       const datos = await solicitar(controller.signal);
-      if (id !== peticionRef.current) return;
-      setDatosClima(transformarDatosClima(datos));
+      if (id !== peticionRef.current) return undefined;
+      const transformados = transformarDatosClima(datos);
+      setDatosClima(transformados);
+      return transformados;
     } catch (err) {
-      if (id !== peticionRef.current || err?.name === 'CanceledError') return;
+      if (id !== peticionRef.current || err?.name === 'CanceledError') return undefined;
       setError(err.message);
       setDatosClima(null);
+      return undefined;
     } finally {
       if (id === peticionRef.current) setCargando(false);
     }
