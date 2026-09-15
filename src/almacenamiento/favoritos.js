@@ -28,7 +28,8 @@ export const agregarFavorito = (favoritos, lugar, limite = LIMITE_FAVORITOS_GRAT
   return [...favoritos, lugar];
 };
 
-export const eliminarFavorito = (favoritos, id) => favoritos.filter((favorito) => favorito.id !== id);
+export const eliminarFavorito = (favoritos, id) =>
+  favoritos.filter((favorito) => favorito.id !== id);
 
 export const reordenarFavoritos = (favoritos, desde, hasta) => {
   const fueraDeRango =

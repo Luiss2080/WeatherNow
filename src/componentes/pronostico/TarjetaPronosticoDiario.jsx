@@ -19,7 +19,10 @@ const TarjetaPronosticoDiario = ({ datos, unidades = UNIDADES.METRICO }) => {
         <p className="text-lg font-bold text-gray-800">
           {formatearTemperatura(datos.temperaturaMax, unidades)}
         </p>
-        <p className="text-sm text-gray-600">          {formatearTemperatura(datos.temperaturaMin, unidades)}</p>
+        <p className="text-sm text-gray-600">
+          {' '}
+          {formatearTemperatura(datos.temperaturaMin, unidades)}
+        </p>
       </div>
     </div>
   );

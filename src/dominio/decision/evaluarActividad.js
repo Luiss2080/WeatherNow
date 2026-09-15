@@ -101,7 +101,9 @@ export const evaluarActividad = (actividadId, condiciones = {}, opciones = {}) =
   ];
 
   const validas = evaluaciones.filter((evaluacion) => evaluacion.nivel);
-  const datosAusentes = evaluaciones.filter((evaluacion) => evaluacion.ausente).map((e) => e.ausente);
+  const datosAusentes = evaluaciones
+    .filter((evaluacion) => evaluacion.ausente)
+    .map((e) => e.ausente);
 
   if (validas.length === 0) {
     return {

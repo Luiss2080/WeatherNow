@@ -88,7 +88,9 @@ const PaginaPrincipal = () => {
   const errorMostrado = errorClima || errorPronostico || errorUbicacion;
 
   const lugarActual = datosClima ? crearLugarDesdeClima(datosClima) : null;
-  const esFavorito = lugarActual ? favoritos.some((favorito) => favorito.id === lugarActual.id) : false;
+  const esFavorito = lugarActual
+    ? favoritos.some((favorito) => favorito.id === lugarActual.id)
+    : false;
 
   const alternarFavorito = () => {
     if (!lugarActual) return;

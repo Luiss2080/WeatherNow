@@ -15,8 +15,7 @@ const esNumeroValido = (valor) => typeof valor === 'number' && !Number.isNaN(val
 export const convertirTemperatura = (celsius, unidades) =>
   esImperial(unidades) ? (celsius * 9) / 5 + 32 : celsius;
 
-export const convertirVelocidad = (kmh, unidades) =>
-  esImperial(unidades) ? kmh * 0.621371 : kmh;
+export const convertirVelocidad = (kmh, unidades) => (esImperial(unidades) ? kmh * 0.621371 : kmh);
 
 export const convertirDistancia = (km, unidades) => (esImperial(unidades) ? km * 0.621371 : km);
 
