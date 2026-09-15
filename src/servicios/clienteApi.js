@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { API_CONFIG } from '../constantes/configuracionApi';
 
-// Crear instancia de axios con configuración base
+// Instancia de axios con la configuración base de OpenWeather.
+// La traducción de errores (404, 401, 429, red) se hace en `servicioClima`.
 const clienteApi = axios.create({
   baseURL: API_CONFIG.URL_BASE,
   timeout: 10000,
@@ -11,14 +12,5 @@ const clienteApi = axios.create({
     units: API_CONFIG.UNIDADES
   }
 });
-
-// Interceptor para manejar respuestas
-clienteApi.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.error('Error en la petición:', error);
-    return Promise.reject(error);
-  }
-);
 
 export default clienteApi;

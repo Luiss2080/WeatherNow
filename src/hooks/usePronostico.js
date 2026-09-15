@@ -1,53 +1,51 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { obtenerPronostico, obtenerPronosticoPorCoordenadas } from '../servicios/servicioClima';
 import { transformarDatosPronostico, agruparPronosticoPorDias } from '../utilidades/transformadores';
 
-// Hook para manejar el pronóstico del clima
+// Hook para manejar el pronóstico del clima.
+// Cancela y descarta peticiones obsoletas al cambiar de consulta.
 export const usePronostico = () => {
   const [datosPronostico, setDatosPronostico] = useState([]);
   const [pronosticoPorDias, setPronosticoPorDias] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
+  const peticionRef = useRef(0);
+  const abortRef = useRef(null);
 
-  const obtenerPronosticoExtendido = async (ciudad) => {
+  const consultar = async (solicitar) => {
+    const id = peticionRef.current + 1;
+    peticionRef.current = id;
+    abortRef.current?.abort();
+
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     setCargando(true);
     setError(null);
-    
+
     try {
-      const datos = await obtenerPronostico(ciudad);
+      const datos = await solicitar(controller.signal);
+      if (id !== peticionRef.current) return;
       const datosTransformados = transformarDatosPronostico(datos);
-      const datosPorDias = agruparPronosticoPorDias(datosTransformados);
-      
       setDatosPronostico(datosTransformados);
-      setPronosticoPorDias(datosPorDias);
+      setPronosticoPorDias(agruparPronosticoPorDias(datosTransformados));
     } catch (err) {
+      if (id !== peticionRef.current || err?.name === 'CanceledError') return;
       setError(err.message);
       setDatosPronostico([]);
       setPronosticoPorDias([]);
     } finally {
-      setCargando(false);
+      if (id === peticionRef.current) setCargando(false);
     }
   };
 
-  const obtenerPronosticoPorUbicacion = async (latitud, longitud) => {
-    setCargando(true);
-    setError(null);
-    
-    try {
-      const datos = await obtenerPronosticoPorCoordenadas(latitud, longitud);
-      const datosTransformados = transformarDatosPronostico(datos);
-      const datosPorDias = agruparPronosticoPorDias(datosTransformados);
-      
-      setDatosPronostico(datosTransformados);
-      setPronosticoPorDias(datosPorDias);
-    } catch (err) {
-      setError(err.message);
-      setDatosPronostico([]);
-      setPronosticoPorDias([]);
-    } finally {
-      setCargando(false);
-    }
-  };
+  const obtenerPronosticoExtendido = (ciudad) =>
+    consultar((signal) => obtenerPronostico(ciudad, signal));
+
+  const obtenerPronosticoPorUbicacion = (latitud, longitud) =>
+    consultar((signal) => obtenerPronosticoPorCoordenadas(latitud, longitud, signal));
+
+  useEffect(() => () => abortRef.current?.abort(), []);
 
   return {
     datosPronostico,

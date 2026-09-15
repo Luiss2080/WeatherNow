@@ -1,12 +1,10 @@
-import { useState, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import Encabezado from '../componentes/comunes/Encabezado';
 import PiePagina from '../componentes/comunes/PiePagina';
 import FormularioBusqueda from '../componentes/formularios/FormularioBusqueda';
 import TarjetaClimaPrincipal from '../componentes/clima/TarjetaClimaPrincipal';
 import DetallesClima from '../componentes/clima/DetallesClima';
 import InfoSolarPrincipal from '../componentes/clima/InfoSolarPrincipal';
-import GraficoTemperatura from '../componentes/graficos/GraficoTemperatura';
-import GraficoHumedad from '../componentes/graficos/GraficoHumedad';
 import ListaPronostico from '../componentes/pronostico/ListaPronostico';
 import Cargador from '../componentes/comunes/Cargador';
 import MensajeError from '../componentes/comunes/MensajeError';
@@ -14,36 +12,52 @@ import { useClima } from '../hooks/useClima';
 import { usePronostico } from '../hooks/usePronostico';
 import { useGeolocalizacion } from '../hooks/useGeolocalizacion';
 
+// Los gráficos (Recharts) se cargan aparte para no inflar el bundle inicial.
+const GraficoTemperatura = lazy(() => import('../componentes/graficos/GraficoTemperatura'));
+const GraficoHumedad = lazy(() => import('../componentes/graficos/GraficoHumedad'));
+
 // Vista principal de la aplicación
 const PaginaPrincipal = () => {
   const { datosClima, cargando: cargandoClima, error: errorClima, obtenerClima, obtenerClimaPorUbicacion } = useClima();
-  const { datosPronostico, pronosticoPorDias, cargando: cargandoPronostico, obtenerPronosticoExtendido, obtenerPronosticoPorUbicacion } = usePronostico();
-  const { obtenerUbicacion } = useGeolocalizacion();
+  const {
+    datosPronostico,
+    pronosticoPorDias,
+    cargando: cargandoPronostico,
+    error: errorPronostico,
+    obtenerPronosticoExtendido,
+    obtenerPronosticoPorUbicacion
+  } = usePronostico();
+  const { error: errorUbicacion, obtenerUbicacion } = useGeolocalizacion();
 
   const manejarBusqueda = async (ciudad) => {
-    await obtenerClima(ciudad);
-    await obtenerPronosticoExtendido(ciudad);
+    await Promise.allSettled([
+      obtenerClima(ciudad),
+      obtenerPronosticoExtendido(ciudad)
+    ]);
   };
 
   const manejarUbicacionActual = async () => {
     const coords = await obtenerUbicacion();
     if (coords) {
-      await obtenerClimaPorUbicacion(coords.latitud, coords.longitud);
-      await obtenerPronosticoPorUbicacion(coords.latitud, coords.longitud);
+      await Promise.allSettled([
+        obtenerClimaPorUbicacion(coords.latitud, coords.longitud),
+        obtenerPronosticoPorUbicacion(coords.latitud, coords.longitud)
+      ]);
     }
   };
 
   const cargando = cargandoClima || cargandoPronostico;
+  const errorMostrado = errorClima || errorPronostico || errorUbicacion;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
       <Encabezado />
-      
+
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           {/* Formulario de búsqueda */}
           <div className="mb-8">
-            <FormularioBusqueda 
+            <FormularioBusqueda
               onBuscar={manejarBusqueda}
               onUbicacionActual={manejarUbicacionActual}
               cargando={cargando}
@@ -51,9 +65,9 @@ const PaginaPrincipal = () => {
           </div>
 
           {/* Mensajes de error */}
-          {errorClima && (
+          {errorMostrado && (
             <div className="mb-6">
-              <MensajeError mensaje={errorClima} />
+              <MensajeError mensaje={errorMostrado} />
             </div>
           )}
 
@@ -83,16 +97,18 @@ const PaginaPrincipal = () => {
 
               {/* Gráficos */}
               {datosPronostico.length > 0 && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <GraficoTemperatura datos={datosPronostico} />
-                  <GraficoHumedad datos={datosPronostico} />
-                </div>
+                <Suspense fallback={<Cargador mensaje="Cargando gráficos..." />}>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <GraficoTemperatura datos={datosPronostico} />
+                    <GraficoHumedad datos={datosPronostico} />
+                  </div>
+                </Suspense>
               )}
             </div>
           )}
 
           {/* Mensaje inicial */}
-          {!cargando && !datosClima && !errorClima && (
+          {!cargando && !datosClima && !errorMostrado && (
             <div className="text-center py-16">
               <div className="text-8xl mb-6">🌦️</div>
               <h2 className="text-3xl font-bold text-gray-800 mb-4">

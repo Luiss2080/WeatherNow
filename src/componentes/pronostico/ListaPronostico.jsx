@@ -8,8 +8,8 @@ const ListaPronostico = ({ pronosticoPorDias }) => {
   return (
     <Tarjeta titulo="📅 Pronóstico de 5 días">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {pronosticoPorDias.slice(0, 5).map((dia, index) => (
-          <TarjetaPronosticoDiario key={index} datos={dia} />
+        {pronosticoPorDias.slice(0, 5).map((dia) => (
+          <TarjetaPronosticoDiario key={dia.diaClave} datos={dia} />
         ))}
       </div>
     </Tarjeta>

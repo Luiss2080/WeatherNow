@@ -37,9 +37,10 @@ const FormularioBusqueda = ({ onBuscar, onUbicacionActual, cargando = false }) =
             onChange={(e) => setCiudad(e.target.value)}
             placeholder="Buscar ciudad..."
             nombre="ciudad"
+            ariaLabel="Nombre de la ciudad"
           />
           {errorValidacion && (
-            <p className="text-red-500 text-sm mt-1">{errorValidacion}</p>
+            <p className="text-red-500 text-sm mt-1" role="alert">{errorValidacion}</p>
           )}
         </div>
         

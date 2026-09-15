@@ -1,4 +1,4 @@
-// Mensajes de la aplicación
+// Mensajes y etiquetas de la aplicación
 export const MENSAJES = {
   ERROR_UBICACION: 'No se pudo obtener tu ubicación. Por favor, permite el acceso a la ubicación.',
   ERROR_API: 'Error al obtener los datos del clima. Inténtalo de nuevo.',
@@ -18,3 +18,30 @@ export const ETIQUETAS = {
   AMANECER: 'Amanecer',
   ATARDECER: 'Atardecer'
 };
+
+// Códigos de error para traducir respuestas del proveedor sin perder la causa
+export const CODIGOS_ERROR = {
+  CIUDAD_NO_ENCONTRADA: 'CIUDAD_NO_ENCONTRADA',
+  CONFIGURACION: 'CONFIGURACION',
+  LIMITE: 'LIMITE',
+  RED: 'RED',
+  DESCONOCIDO: 'DESCONOCIDO'
+};
+
+export const MENSAJES_ERROR = {
+  [CODIGOS_ERROR.CIUDAD_NO_ENCONTRADA]:
+    'No encontramos esa ciudad. Revisa el nombre e inténtalo de nuevo.',
+  [CODIGOS_ERROR.CONFIGURACION]:
+    'La API key no es válida o falta. Revisa la configuración.',
+  [CODIGOS_ERROR.LIMITE]:
+    'Se superó el límite de peticiones. Espera un momento e inténtalo de nuevo.',
+  [CODIGOS_ERROR.RED]:
+    'No hay conexión con el servicio del clima. Revisa tu conexión.',
+  [CODIGOS_ERROR.DESCONOCIDO]:
+    'No se pudo obtener el clima. Inténtalo de nuevo.'
+};
+
+export const mensajeDesdeError = (error) =>
+  MENSAJES_ERROR[error?.codigo] ||
+  error?.message ||
+  MENSAJES_ERROR[CODIGOS_ERROR.DESCONOCIDO];

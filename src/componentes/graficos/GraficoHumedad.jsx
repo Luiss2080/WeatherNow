@@ -1,4 +1,5 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { formatearHora } from '../../utilidades/formateadores';
 import Tarjeta from '../comunes/Tarjeta';
 
 // Componente para mostrar gráfico de humedad
@@ -6,7 +7,7 @@ const GraficoHumedad = ({ datos }) => {
   if (!datos || datos.length === 0) return null;
 
   const datosGrafico = datos.slice(0, 8).map(item => ({
-    hora: new Date(item.fecha * 1000).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+    hora: formatearHora(item.fecha, item.zonaHoraria),
     humedad: item.humedad
   }));
 
@@ -17,13 +18,12 @@ const GraficoHumedad = ({ datos }) => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="hora" />
           <YAxis label={{ value: '%', angle: -90, position: 'insideLeft' }} />
-          <Tooltip 
+          <Tooltip
             formatter={(value) => [`${value}%`, 'Humedad']}
           />
-          <Legend />
-          <Bar 
-            dataKey="humedad" 
-            fill="#3b82f6" 
+          <Bar
+            dataKey="humedad"
+            fill="#3b82f6"
             name="Humedad"
             radius={[8, 8, 0, 0]}
           />

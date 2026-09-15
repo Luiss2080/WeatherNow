@@ -12,14 +12,14 @@ const InfoSolarPrincipal = ({ datosClima }) => {
           <div className="text-5xl mb-2">🌅</div>
           <p className="text-sm text-gray-600 mb-1">Amanecer</p>
           <p className="text-2xl font-bold text-gray-800">
-            {formatearHora(datosClima.amanecer)}
+            {formatearHora(datosClima.amanecer, datosClima.zonaHoraria)}
           </p>
         </div>
         <div className="text-center">
           <div className="text-5xl mb-2">🌇</div>
           <p className="text-sm text-gray-600 mb-1">Atardecer</p>
           <p className="text-2xl font-bold text-gray-800">
-            {formatearHora(datosClima.atardecer)}
+            {formatearHora(datosClima.atardecer, datosClima.zonaHoraria)}
           </p>
         </div>
       </div>

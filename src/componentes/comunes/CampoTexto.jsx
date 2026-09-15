@@ -1,12 +1,13 @@
 // Componente de input de texto reutilizable
-const CampoTexto = ({ 
-  valor, 
-  onChange, 
-  placeholder = '', 
+const CampoTexto = ({
+  valor,
+  onChange,
+  placeholder = '',
   tipo = 'text',
   nombre = '',
   requerido = false,
-  claseAdicional = ''
+  claseAdicional = '',
+  ariaLabel = ''
 }) => {
   return (
     <input
@@ -16,6 +17,7 @@ const CampoTexto = ({
       onChange={onChange}
       placeholder={placeholder}
       required={requerido}
+      aria-label={ariaLabel || placeholder}
       className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all ${claseAdicional}`}
     />
   );
