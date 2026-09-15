@@ -33,9 +33,9 @@ alergias?), con lugares favoritos y alertas.
 
 El estado y el plan no se describen aquí "de memoria": viven en las specs.
 
-| Spec                                                           | Qué es                                                            | Estado            |
-| -------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------- |
-| [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada        |
+| Spec                                                           | Qué es                                                            | Estado               |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------- |
+| [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada           |
 | [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | En curso (Fases A–B) |
 
 Artefactos SDD: [constitución](docs/constitution.md) ·
