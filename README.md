@@ -36,7 +36,7 @@ El estado y el plan no se describen aquí "de memoria": viven en las specs.
 | Spec                                                           | Qué es                                                            | Estado               |
 | -------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------- |
 | [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada           |
-| [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | En curso (Fases A–B) |
+| [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | En curso (Fases A–C) |
 
 Artefactos SDD: [constitución](docs/constitution.md) ·
 [AGENTS.md](AGENTS.md) · [plan 001](specs/001-remediacion-base/plan.md) ·
@@ -67,6 +67,12 @@ Decisiones por actividad (spec 002, Fase B):
   ropa y lavar el auto.
 - Motivo legible, mejor franja del día y aviso de variables sin datos.
 
+Personalización (spec 002, Fase C):
+
+- Lugares favoritos (guardar, reordenar, eliminar), persistidos en el navegador.
+- Autocarga del último lugar consultado al abrir la app.
+- Selector de unidades °C/km/h ↔ °F/mph que afecta a toda la interfaz.
+
 Proxy implementado (spec 002, Fase A):
 
 - El navegador solo habla con `/api`; la clave vive en el servidor
@@ -74,9 +80,8 @@ Proxy implementado (spec 002, Fase A):
 - Caché con TTL (clima 10 min, pronóstico 30 min) y rate limiting con cabeceras
   `X-RateLimit-*`.
 
-Todavía **no** está hecho (spec 002, Fases C–F):
+Todavía **no** está hecho (spec 002, Fases D–F):
 
-- Favoritos, último lugar y unidades configurables.
 - Salud (UV y calidad del aire) integrada en los veredictos.
 - Alertas y límites por plan.
 - PWA/offline, SEO, métricas y QA de accesibilidad final.

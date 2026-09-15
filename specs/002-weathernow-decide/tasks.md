@@ -65,17 +65,24 @@
 
 ## Fase C — Personalización
 
-- [ ] **TC1 — Almacenamiento local** (RF-8, RF-18)
-  - Módulo de favoritos/preferencias/caché en `localStorage` con validación.
+- [x] **TC1 — Almacenamiento local** (RF-8, RF-18)
+  - `src/almacenamiento/` con `almacenLocal` (lectura/escritura tolerante a
+    errores), `favoritos`, `preferencias` y `ultimoLugar`, todos con validación.
+  - El caché offline del clima (RF-18) se resuelve en TF1.
   - _Hecho cuando:_ datos corruptos no rompen la app y se auto-reparan.
+    **Verificado** en `tests/almacenamiento.test.js`.
 
-- [ ] **TC2 — Favoritos** (RF-8, RF-10)
-  - Guardar, listar, eliminar y reordenar lugares.
+- [x] **TC2 — Favoritos** (RF-8, RF-10)
+  - Guardar, listar, eliminar y reordenar (botones subir/bajar accesibles),
+    con límite gratuito de 3.
   - _Hecho cuando:_ el favorito persiste entre recargas y se elimina sin residuos.
+    **Verificado** en navegador (persistencia, reorden y borrado).
 
-- [ ] **TC3 — Último lugar y preferencias** (RF-9, RF-11)
-  - Autocarga del último lugar y selector métrico/imperial.
+- [x] **TC3 — Último lugar y preferencias** (RF-9, RF-11)
+  - Autocarga del último lugar al abrir y selector métrico/imperial que formatea
+    también los motivos de los veredictos.
   - _Hecho cuando:_ al abrir la app carga el último lugar en sus unidades.
+    **Verificado** con tests de conversión y de persistencia.
 
 ## Fase D — Salud
 
