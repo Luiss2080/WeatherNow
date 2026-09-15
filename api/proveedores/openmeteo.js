@@ -2,8 +2,7 @@ import { CODIGOS_ERROR } from '../../src/constantes/mensajes.js';
 import { categoriaAire } from '../../src/dominio/salud/calidadAire.js';
 import { crearErrorApi } from '../errores.js';
 
-const numeroONull = (valor) =>
-  typeof valor === 'number' && Number.isFinite(valor) ? valor : null;
+const numeroONull = (valor) => (typeof valor === 'number' && Number.isFinite(valor) ? valor : null);
 
 // Normaliza la respuesta de Open-Meteo Air Quality a un contrato estable.
 export const normalizarAire = (datos) => {

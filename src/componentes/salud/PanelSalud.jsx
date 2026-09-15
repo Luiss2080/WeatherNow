@@ -50,9 +50,7 @@ const PanelSalud = ({ aire }) => {
           valor={indiceAire === null ? 'Sin datos de calidad del aire' : `AQI ${indiceAire}`}
           etiqueta={categoria ? categoria.etiqueta : null}
           aviso={avisoAire}
-          tono={
-            avisoAire ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50'
-          }
+          tono={avisoAire ? 'border-red-300 bg-red-50' : 'border-gray-200 bg-gray-50'}
         />
         <Bloque
           titulo="Polen"
