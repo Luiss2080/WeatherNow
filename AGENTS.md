@@ -3,9 +3,8 @@
 ## Proyecto
 
 WeatherNow es una aplicación web de clima en español. Hoy es una SPA de React 19
-
-- Vite 7 + Tailwind CSS 4 que consulta OpenWeather (clima actual + pronóstico de
-  5 días) y lo presenta con tarjetas y gráficos (Recharts).
+con Vite 7 y Tailwind CSS 4 que consulta OpenWeather (clima actual + pronóstico de
+5 días) y lo presenta con tarjetas y gráficos (Recharts).
 
 Dirección de producto acordada (spec 002): evolucionar de "visor de datos" a
 **WeatherNow Decide**, un MVP de consumo que traduce el clima en **decisiones
@@ -23,6 +22,7 @@ src/
 ├── utilidades/    lógica pura (formateadores, transformadores, validadores)
 ├── constantes/    configuración, mensajes, iconos, colores
 └── vistas/        PaginaPrincipal
+tests/             tests con Vitest + Testing Library
 docs/              constitución y guías
 specs/             specs, planes y tareas (SDD)
 ```
@@ -33,10 +33,10 @@ specs/             specs, planes y tareas (SDD)
 - Desarrollo: `npm run dev` (Vite en http://localhost:5173)
 - Build: `npm run build` (`tsc --noEmit && vite build`)
 - Typecheck: `npm run typecheck`
+- Tests: `npm test` (Vitest, una pasada) · `npm run test:watch`
+- Lint: `npm run lint` (ESLint)
+- Formato: `npm run format` · comprobar con `npm run format:check`
 - Preview: `npm run preview`
-- Tests: **pendiente** — se introduce Vitest en la spec 001 (T6). Hasta entonces
-  no existe `npm test`.
-- Lint/formato: **pendiente** — se introduce ESLint/Prettier en la spec 001 (T7).
 
 ## Estilo y convenciones
 
@@ -47,11 +47,15 @@ specs/             specs, planes y tareas (SDD)
 - Componentes pequeños y de responsabilidad única (~150 líneas máx.).
 - Tailwind CSS 4 en modo CSS-first: `src/style.css` usa `@import "tailwindcss";`.
   No reintroducir `tailwind.config.js` ni directivas `@tailwind`.
+- Formato con Prettier (`.prettierrc.json`): comillas simples, punto y coma,
+  ancho 100.
 
 ## Reglas
 
 - Lee `docs/constitution.md` y la spec activa **antes** de tocar código.
 - Ningún comportamiento se implementa sin `RF-x` que lo respalde.
+- La lógica con invariantes (formateadores, transformadores, errores) va con
+  test en `tests/`.
 - No añadir dependencias sin justificarlo y acordarlo.
 - No hardcodear secretos ni claves; usa variables de entorno (`.env.example`).
 - No editar `dist/` ni `node_modules/` (generados, ignorados por git).
@@ -60,6 +64,7 @@ specs/             specs, planes y tareas (SDD)
 ## Al terminar cualquier tarea
 
 - `npm run typecheck` en verde.
+- `npm run lint` en verde.
+- `npm test` en verde.
 - `npm run build` en verde.
-- `npm test` en verde (cuando exista).
 - Actualizar la spec/README si el comportamiento cambió.

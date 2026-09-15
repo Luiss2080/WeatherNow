@@ -125,9 +125,12 @@ vite build`) sin errores en un clon limpio.
   ubicación" denegando permiso, con mensajes correctos en cada caso.
 - El README describe el estado real del proyecto.
 
-## Dudas abiertas
+## Dudas resueltas
 
-- [NECESITA ACLARACIÓN] ¿Se mantiene TypeScript solo como `typecheck` sobre
-  `.jsx` (situación actual) o se migra el código a `.ts/.tsx`?
-- [NECESITA ACLARACIÓN] ¿Se conserva `axios` o se migra a `fetch` nativo para
-  reducir dependencias y superficie de vulnerabilidades?
+- **TypeScript (T9)**: se mantiene `tsc --noEmit` como typecheck sobre `.jsx`
+  (`allowJs`, `checkJs: false`). No se migra a `.ts/.tsx` en la spec 001 para no
+  mezclar una migración masiva con la remediación. Se reevaluará al introducir
+  el proxy de la spec 002, donde los tipos aportan más valor.
+- **axios vs fetch**: se conserva `axios`, ya actualizado a `^1.20` con
+  `npm audit` en 0 vulnerabilidades. Se reevalúa si se prioriza reducir
+  dependencias.
