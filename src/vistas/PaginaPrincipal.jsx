@@ -11,14 +11,20 @@ import PanelSalud from '../componentes/salud/PanelSalud';
 import ListaFavoritos from '../componentes/favoritos/ListaFavoritos';
 import BotonFavorito from '../componentes/favoritos/BotonFavorito';
 import SelectorUnidades from '../componentes/favoritos/SelectorUnidades';
+import SelectorPlan from '../componentes/planes/SelectorPlan';
+import AnuncioDemo from '../componentes/planes/AnuncioDemo';
+import PanelAlertas from '../componentes/alertas/PanelAlertas';
 import Cargador from '../componentes/comunes/Cargador';
 import MensajeError from '../componentes/comunes/MensajeError';
 import { condicionesDesdeClima } from '../dominio/decision/franjas';
+import { evaluarAlerta } from '../dominio/alertas/evaluarAlerta';
+import { limiteAlertas, limiteFavoritos, mostrarPublicidad } from '../dominio/planes';
 import { crearLugarDesdeClima } from '../almacenamiento/favoritos';
 import { useClima } from '../hooks/useClima';
 import { usePronostico } from '../hooks/usePronostico';
 import { useGeolocalizacion } from '../hooks/useGeolocalizacion';
 import { useFavoritos } from '../hooks/useFavoritos';
+import { useAlertas } from '../hooks/useAlertas';
 import { usePreferencias } from '../hooks/usePreferencias';
 import { useUltimoLugar } from '../hooks/useUltimoLugar';
 import { useAire } from '../hooks/useAire';
@@ -46,8 +52,16 @@ const PaginaPrincipal = () => {
   } = usePronostico();
   const { error: errorUbicacion, obtenerUbicacion } = useGeolocalizacion();
   const { datosAire, cargarAire } = useAire();
-  const { preferencias, cambiarUnidades } = usePreferencias();
-  const { favoritos, agregar, eliminar, reordenar } = useFavoritos();
+  const { preferencias, cambiarUnidades, cambiarPlan } = usePreferencias();
+  const { favoritos, agregar, eliminar, reordenar } = useFavoritos(
+    limiteFavoritos(preferencias.plan)
+  );
+  const {
+    alertas,
+    agregar: agregarAlerta,
+    eliminar: eliminarAlerta,
+    alternar: alternarAlerta
+  } = useAlertas(limiteAlertas(preferencias.plan));
   const { ultimoLugar, recordar } = useUltimoLugar();
   const cargadoInicial = useRef(false);
 
@@ -108,6 +122,16 @@ const PaginaPrincipal = () => {
     else agregar(lugarActual);
   };
 
+  const alertasDisparadas = lugarActual
+    ? alertas
+        .filter((alerta) => alerta.activa && alerta.lugarId === lugarActual.id)
+        .map((alerta) => ({
+          alerta,
+          resultado: evaluarAlerta(alerta, { franjas: datosPronostico, aire: datosAire })
+        }))
+        .filter((entrada) => entrada.resultado.cumplida)
+    : [];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
       <Encabezado />
@@ -121,8 +145,9 @@ const PaginaPrincipal = () => {
               onUbicacionActual={manejarUbicacionActual}
               cargando={cargando}
             />
-            <div className="flex justify-end">
+            <div className="flex flex-wrap justify-end gap-4">
               <SelectorUnidades unidades={preferencias.unidades} onCambiar={cambiarUnidades} />
+              <SelectorPlan plan={preferencias.plan} onCambiar={cambiarPlan} />
             </div>
             <ListaFavoritos
               favoritos={favoritos}
@@ -131,6 +156,7 @@ const PaginaPrincipal = () => {
               onEliminar={eliminar}
               onMover={reordenar}
             />
+            {mostrarPublicidad(preferencias.plan) && <AnuncioDemo />}
           </div>
 
           {/* Mensajes de error */}
@@ -171,6 +197,17 @@ const PaginaPrincipal = () => {
 
               {/* Salud: UV, calidad del aire y polen (spec 002, Fase D) */}
               <PanelSalud aire={datosAire} />
+
+              {/* Alertas (spec 002, Fase E) */}
+              <PanelAlertas
+                lugar={lugarActual}
+                alertas={alertas}
+                disparadas={alertasDisparadas}
+                limite={limiteAlertas(preferencias.plan)}
+                onAgregar={agregarAlerta}
+                onEliminar={eliminarAlerta}
+                onAlternar={alternarAlerta}
+              />
 
               {/* Pronóstico de 5 días */}
               {pronosticoPorDias.length > 0 && (
