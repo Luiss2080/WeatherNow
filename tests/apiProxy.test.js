@@ -7,7 +7,7 @@ import { CODIGOS_ERROR } from '../src/constantes/mensajes.js';
 
 const crearConfiguracionPrueba = () => ({
   proveedor: {},
-  cache: { climaTtlMs: 600000, pronosticoTtlMs: 1800000 },
+  cache: { climaTtlMs: 600000, pronosticoTtlMs: 1800000, aireTtlMs: 1800000 },
   limite: { maximo: 100, ventanaMs: 600000 }
 });
 

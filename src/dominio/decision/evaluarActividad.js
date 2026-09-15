@@ -97,7 +97,7 @@ export const evaluarActividad = (actividadId, condiciones = {}, opciones = {}) =
     evaluarViento(condiciones.velocidadViento, actividad.viento, 'viento', unidades),
     evaluarLluvia(condiciones.probabilidadLluvia, actividad.lluvia, 'lluvia'),
     evaluarIndice(condiciones.uv, actividad.uv, 'uv', 'Índice UV'),
-    evaluarIndice(condiciones.aqi, actividad.aqi, 'aqi', 'Calidad del aire')
+    evaluarIndice(condiciones.aqi, actividad.aqi, 'aqi', 'El índice de calidad del aire')
   ];
 
   const validas = evaluaciones.filter((evaluacion) => evaluacion.nivel);
