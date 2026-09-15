@@ -194,37 +194,43 @@ const PaginaPrincipal = () => {
             </div>
           )}
 
+          {/* Aviso de datos en caché */}
+          {usandoCache && <BannerCache guardadoEn={instantanea.guardadoEn} />}
+
           {/* Cargador */}
           {cargando && <Cargador mensaje="Obteniendo datos del clima..." />}
 
           {/* Contenido principal */}
-          {!cargando && datosClima && (
+          {!cargando && climaMostrado && (
             <div className="space-y-8">
               {/* Sección principal del clima */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-4">
-                  <TarjetaClimaPrincipal datosClima={datosClima} unidades={preferencias.unidades} />
+                  <TarjetaClimaPrincipal
+                    datosClima={climaMostrado}
+                    unidades={preferencias.unidades}
+                  />
                   <div className="flex justify-end">
                     <BotonFavorito esFavorito={esFavorito} onAlternar={alternarFavorito} />
                   </div>
                 </div>
                 <div>
-                  <InfoSolarPrincipal datosClima={datosClima} />
+                  <InfoSolarPrincipal datosClima={climaMostrado} />
                 </div>
               </div>
 
               {/* Detalles del clima */}
-              <DetallesClima datosClima={datosClima} unidades={preferencias.unidades} />
+              <DetallesClima datosClima={climaMostrado} unidades={preferencias.unidades} />
 
               {/* Decisiones por actividad (spec 002, Fase B) */}
               <PanelDecisiones
-                condiciones={condicionesDesdeClima(datosClima, datosPronostico, datosAire)}
-                franjas={datosPronostico}
+                condiciones={condicionesDesdeClima(climaMostrado, pronosticoMostrado, aireMostrado)}
+                franjas={pronosticoMostrado}
                 unidades={preferencias.unidades}
               />
 
               {/* Salud: UV, calidad del aire y polen (spec 002, Fase D) */}
-              <PanelSalud aire={datosAire} />
+              <PanelSalud aire={aireMostrado} />
 
               {/* Alertas (spec 002, Fase E) */}
               <PanelAlertas
@@ -246,11 +252,14 @@ const PaginaPrincipal = () => {
               )}
 
               {/* Gráficos */}
-              {datosPronostico.length > 0 && (
+              {pronosticoMostrado.length > 0 && (
                 <Suspense fallback={<Cargador mensaje="Cargando gráficos..." />}>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <GraficoTemperatura datos={datosPronostico} unidades={preferencias.unidades} />
-                    <GraficoHumedad datos={datosPronostico} />
+                    <GraficoTemperatura
+                      datos={pronosticoMostrado}
+                      unidades={preferencias.unidades}
+                    />
+                    <GraficoHumedad datos={pronosticoMostrado} />
                   </div>
                 </Suspense>
               )}
@@ -258,13 +267,20 @@ const PaginaPrincipal = () => {
           )}
 
           {/* Mensaje inicial */}
-          {!cargando && !datosClima && !errorMostrado && (
+          {!cargando && !climaMostrado && !errorMostrado && (
             <div className="text-center py-16">
               <div className="text-8xl mb-6">🌦️</div>
               <h2 className="text-3xl font-bold text-gray-800 mb-4">¡Bienvenido a WeatherNow!</h2>
               <p className="text-xl text-gray-600">
                 Busca una ciudad o usa tu ubicación actual para ver el clima
               </p>
+            </div>
+          )}
+
+          {/* Uso del proxy (solo desarrollo) */}
+          {import.meta.env.DEV && (
+            <div className="mt-8">
+              <PanelMetricas />
             </div>
           )}
         </div>
