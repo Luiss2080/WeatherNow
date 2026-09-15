@@ -17,7 +17,7 @@ la spec actualizada en el mismo cambio.
 
 ## 2. El código dice la verdad
 
-- Sin datos falsos, duplicados ni *placeholders* disfrazados de dato real.
+- Sin datos falsos, duplicados ni _placeholders_ disfrazados de dato real.
 - Sin configuración muerta (ficheros/librerías que ya no aplican).
 - El README describe lo que el proyecto **hace hoy**, no lo que se desea.
 - Los errores se comunican de forma específica (401 ≠ 404 ≠ 429 ≠ red), nunca

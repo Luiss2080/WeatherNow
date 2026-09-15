@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { obtenerPronostico, obtenerPronosticoPorCoordenadas } from '../servicios/servicioClima';
-import { transformarDatosPronostico, agruparPronosticoPorDias } from '../utilidades/transformadores';
+import {
+  transformarDatosPronostico,
+  agruparPronosticoPorDias
+} from '../utilidades/transformadores';
 
 // Hook para manejar el pronóstico del clima.
 // Cancela y descarta peticiones obsoletas al cambiar de consulta.

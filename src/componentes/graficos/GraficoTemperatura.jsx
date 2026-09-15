@@ -1,4 +1,12 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer
+} from 'recharts';
 import { formatearHora } from '../../utilidades/formateadores';
 import Tarjeta from '../comunes/Tarjeta';
 
@@ -6,7 +14,7 @@ import Tarjeta from '../comunes/Tarjeta';
 const GraficoTemperatura = ({ datos }) => {
   if (!datos || datos.length === 0) return null;
 
-  const datosGrafico = datos.slice(0, 8).map(item => ({
+  const datosGrafico = datos.slice(0, 8).map((item) => ({
     hora: formatearHora(item.fecha, item.zonaHoraria),
     temperatura: Math.round(item.temperatura)
   }));
@@ -18,9 +26,7 @@ const GraficoTemperatura = ({ datos }) => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="hora" />
           <YAxis label={{ value: '°C', angle: -90, position: 'insideLeft' }} />
-          <Tooltip
-            formatter={(value) => [`${value}°C`, 'Temperatura']}
-          />
+          <Tooltip formatter={(value) => [`${value}°C`, 'Temperatura']} />
           <Line
             type="monotone"
             dataKey="temperatura"

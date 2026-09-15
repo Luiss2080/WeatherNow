@@ -33,7 +33,7 @@ export const transformarDatosPronostico = (datosApi) => {
 
   const zonaHoraria = datosApi.city?.timezone || 0;
 
-  return datosApi.list.map(item => ({
+  return datosApi.list.map((item) => ({
     fecha: item.dt,
     zonaHoraria,
     temperatura: item.main?.temp || 0,
@@ -51,19 +51,19 @@ export const transformarDatosPronostico = (datosApi) => {
 export const agruparPronosticoPorDias = (pronostico) => {
   const dias = new Map();
 
-  pronostico.forEach(item => {
+  pronostico.forEach((item) => {
     const clave = claveDia(item.fecha, item.zonaHoraria || 0);
     if (!dias.has(clave)) dias.set(clave, []);
     dias.get(clave).push(item);
   });
 
-  return [...dias.values()].map(items => ({
+  return [...dias.values()].map((items) => ({
     diaClave: claveDia(items[0].fecha, items[0].zonaHoraria || 0),
     fecha: items[0].fecha,
     zonaHoraria: items[0].zonaHoraria || 0,
     items,
-    temperaturaMin: Math.min(...items.map(i => i.temperaturaMinima)),
-    temperaturaMax: Math.max(...items.map(i => i.temperaturaMaxima)),
+    temperaturaMin: Math.min(...items.map((i) => i.temperaturaMinima)),
+    temperaturaMax: Math.max(...items.map((i) => i.temperaturaMaxima)),
     humedadPromedio: items.reduce((sum, i) => sum + i.humedad, 0) / items.length
   }));
 };

@@ -4,7 +4,7 @@ import { obtenerIconoClima } from '../../constantes/iconosClima';
 // Componente para mostrar una tarjeta de pronóstico diario
 const TarjetaPronosticoDiario = ({ datos }) => {
   const iconoInfo = obtenerIconoClima(datos.items[0]?.icono || '01d');
-  
+
   return (
     <div className="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-lg transition-shadow">
       <p className="text-sm text-gray-600 mb-2">
@@ -15,9 +15,7 @@ const TarjetaPronosticoDiario = ({ datos }) => {
         <p className="text-lg font-bold text-gray-800">
           {formatearTemperatura(datos.temperaturaMax)}
         </p>
-        <p className="text-sm text-gray-600">
-          {formatearTemperatura(datos.temperaturaMin)}
-        </p>
+        <p className="text-sm text-gray-600">{formatearTemperatura(datos.temperaturaMin)}</p>
       </div>
     </div>
   );

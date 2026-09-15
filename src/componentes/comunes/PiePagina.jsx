@@ -10,9 +10,7 @@ const PiePagina = () => {
             </p>
           </div>
           <div className="flex items-center space-x-4">
-            <p className="text-sm text-gray-400">
-              Powered by OpenWeather API
-            </p>
+            <p className="text-sm text-gray-400">Powered by OpenWeather API</p>
           </div>
         </div>
       </div>

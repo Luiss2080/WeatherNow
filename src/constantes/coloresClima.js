@@ -1,10 +1,10 @@
 // Colores para diferentes condiciones climáticas
 export const COLORES_TEMPERATURA = {
-  muyFrio: '#3b82f6',    // azul
-  frio: '#60a5fa',       // azul claro
-  templado: '#fbbf24',   // amarillo
-  calido: '#f59e0b',     // naranja
-  muyCalido: '#ef4444'   // rojo
+  muyFrio: '#3b82f6', // azul
+  frio: '#60a5fa', // azul claro
+  templado: '#fbbf24', // amarillo
+  calido: '#f59e0b', // naranja
+  muyCalido: '#ef4444' // rojo
 };
 
 export const obtenerColorTemperatura = (temperatura) => {

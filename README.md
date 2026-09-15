@@ -2,7 +2,7 @@
 
 # 🌦️ WeatherNow
 
-### *Tu ventana al clima del mundo en tiempo real*
+### _Tu ventana al clima del mundo en tiempo real_
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
@@ -33,9 +33,9 @@ alergias?), con lugares favoritos y alertas.
 
 El estado y el plan no se describen aquí "de memoria": viven en las specs.
 
-| Spec | Qué es | Estado |
-|------|--------|--------|
-| [001 — Remediación base](specs/001-remediacion-base/spec.md) | Sanear el proyecto: dependencias, build, bugs, errores, tests. | En curso |
+| Spec                                                           | Qué es                                                            | Estado       |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- | ------------ |
+| [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | En curso     |
 | [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | Especificado |
 
 Artefactos SDD: [constitución](docs/constitution.md) ·
@@ -87,14 +87,14 @@ npm run dev
 
 ## 🛠️ Stack Tecnológico
 
-| Herramienta | Versión | Propósito |
-|------------|---------|-----------|
-| **React** | 19 | UI con componentes y hooks |
-| **Vite** | 7 | Build y servidor de desarrollo |
-| **Tailwind CSS** | 4 (CSS-first) | Estilos |
-| **Axios** | 1.20 | Cliente HTTP |
-| **Recharts** | 3 | Gráficos |
-| **TypeScript** | 5.9 | `typecheck` de los `.jsx` (`allowJs`, sin migrar a `.ts`) |
+| Herramienta      | Versión       | Propósito                                                 |
+| ---------------- | ------------- | --------------------------------------------------------- |
+| **React**        | 19            | UI con componentes y hooks                                |
+| **Vite**         | 7             | Build y servidor de desarrollo                            |
+| **Tailwind CSS** | 4 (CSS-first) | Estilos                                                   |
+| **Axios**        | 1.20          | Cliente HTTP                                              |
+| **Recharts**     | 3             | Gráficos                                                  |
+| **TypeScript**   | 5.9           | `typecheck` de los `.jsx` (`allowJs`, sin migrar a `.ts`) |
 
 Pendiente de introducir (spec 001): **Vitest** + Testing Library, **ESLint** y
 **Prettier**.
@@ -123,12 +123,12 @@ Pendiente de introducir (spec 001): **Vitest** + Testing Library, **ESLint** y
 
 ## 🎮 Cómo Usar
 
-| Acción | Resultado |
-|--------|-----------|
-| 🔍 **Buscar ciudad** | Madrid, Tokyo, New York… |
-| 📍 **Mi ubicación** | Clima de tu posición |
-| 📊 **Ver gráficos** | Temperatura y humedad por franjas |
-| 📅 **Pronóstico** | Próximos 5 días |
+| Acción               | Resultado                         |
+| -------------------- | --------------------------------- |
+| 🔍 **Buscar ciudad** | Madrid, Tokyo, New York…          |
+| 📍 **Mi ubicación**  | Clima de tu posición              |
+| 📊 **Ver gráficos**  | Temperatura y humedad por franjas |
+| 📅 **Pronóstico**    | Próximos 5 días                   |
 
 ---
 

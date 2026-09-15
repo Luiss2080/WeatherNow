@@ -6,7 +6,7 @@ import Tarjeta from '../comunes/Tarjeta';
 const GraficoHumedad = ({ datos }) => {
   if (!datos || datos.length === 0) return null;
 
-  const datosGrafico = datos.slice(0, 8).map(item => ({
+  const datosGrafico = datos.slice(0, 8).map((item) => ({
     hora: formatearHora(item.fecha, item.zonaHoraria),
     humedad: item.humedad
   }));
@@ -18,15 +18,8 @@ const GraficoHumedad = ({ datos }) => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="hora" />
           <YAxis label={{ value: '%', angle: -90, position: 'insideLeft' }} />
-          <Tooltip
-            formatter={(value) => [`${value}%`, 'Humedad']}
-          />
-          <Bar
-            dataKey="humedad"
-            fill="#3b82f6"
-            name="Humedad"
-            radius={[8, 8, 0, 0]}
-          />
+          <Tooltip formatter={(value) => [`${value}%`, 'Humedad']} />
+          <Bar dataKey="humedad" fill="#3b82f6" name="Humedad" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </Tarjeta>

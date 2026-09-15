@@ -10,7 +10,7 @@ export const useGeolocalizacion = () => {
   const obtenerUbicacion = async () => {
     setCargando(true);
     setError(null);
-    
+
     try {
       const coords = await obtenerUbicacionActual();
       setUbicacion(coords);

@@ -36,16 +36,34 @@ describe('transformarDatosPronostico y agruparPronosticoPorDias', () => {
   const respuesta = {
     city: { timezone: zonaHoraria },
     list: [
-      { dt: 1600036200, main: { temp: 10, temp_min: 8, temp_max: 12, humidity: 60 }, weather: [{ icon: '01d', description: 'a' }], wind: { speed: 1 }, pop: 0.2 },
-      { dt: 1600039800, main: { temp: 11, temp_min: 9, temp_max: 13, humidity: 62 }, weather: [{ icon: '01d', description: 'b' }], wind: { speed: 2 }, pop: 0.3 },
-      { dt: 1600043400, main: { temp: 12, temp_min: 10, temp_max: 14, humidity: 64 }, weather: [{ icon: '01d', description: 'c' }], wind: { speed: 3 }, pop: 0.4 }
+      {
+        dt: 1600036200,
+        main: { temp: 10, temp_min: 8, temp_max: 12, humidity: 60 },
+        weather: [{ icon: '01d', description: 'a' }],
+        wind: { speed: 1 },
+        pop: 0.2
+      },
+      {
+        dt: 1600039800,
+        main: { temp: 11, temp_min: 9, temp_max: 13, humidity: 62 },
+        weather: [{ icon: '01d', description: 'b' }],
+        wind: { speed: 2 },
+        pop: 0.3
+      },
+      {
+        dt: 1600043400,
+        main: { temp: 12, temp_min: 10, temp_max: 14, humidity: 64 },
+        weather: [{ icon: '01d', description: 'c' }],
+        wind: { speed: 3 },
+        pop: 0.4
+      }
     ]
   };
 
   it('propaga la zona horaria a cada franja', () => {
     const items = transformarDatosPronostico(respuesta);
     expect(items).toHaveLength(3);
-    expect(items.every(i => i.zonaHoraria === zonaHoraria)).toBe(true);
+    expect(items.every((i) => i.zonaHoraria === zonaHoraria)).toBe(true);
     expect(items[0].probabilidadLluvia).toBeCloseTo(20);
   });
 

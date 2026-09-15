@@ -4,7 +4,7 @@ import { transformarDatosClima } from '../utilidades/transformadores';
 
 // Hook personalizado para manejar datos del clima.
 // Cancela y descarta peticiones obsoletas al cambiar de consulta.
-export const useClima = (ciudadInicial = '') => {
+export const useClima = () => {
   const [datosClima, setDatosClima] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
@@ -35,19 +35,10 @@ export const useClima = (ciudadInicial = '') => {
     }
   };
 
-  const obtenerClima = (ciudad) =>
-    consultar((signal) => obtenerClimaPorCiudad(ciudad, signal));
+  const obtenerClima = (ciudad) => consultar((signal) => obtenerClimaPorCiudad(ciudad, signal));
 
   const obtenerClimaPorUbicacion = (latitud, longitud) =>
     consultar((signal) => obtenerClimaPorCoordenadas(latitud, longitud, signal));
-
-  useEffect(() => {
-    if (ciudadInicial) {
-      obtenerClima(ciudadInicial);
-    }
-    // Solo debe reaccionar a la ciudad inicial.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ciudadInicial]);
 
   useEffect(() => () => abortRef.current?.abort(), []);
 

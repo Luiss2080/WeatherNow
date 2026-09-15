@@ -25,8 +25,7 @@ const crearErrorConfiguracion = () => {
   return error;
 };
 
-const hayApiKey = () =>
-  Boolean(API_CONFIG.API_KEY && API_CONFIG.API_KEY !== 'TU_API_KEY_AQUI');
+const hayApiKey = () => Boolean(API_CONFIG.API_KEY && API_CONFIG.API_KEY !== 'TU_API_KEY_AQUI');
 
 const solicitar = async (endpoint, params, signal) => {
   if (!hayApiKey()) throw crearErrorConfiguracion();

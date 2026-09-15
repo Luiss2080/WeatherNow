@@ -12,13 +12,13 @@ const FormularioBusqueda = ({ onBuscar, onUbicacionActual, cargando = false }) =
   const manejarEnvio = (e) => {
     e.preventDefault();
     setErrorValidacion('');
-    
+
     const validacion = validarNombreCiudad(ciudad);
     if (!validacion.valido) {
       setErrorValidacion(validacion.mensaje);
       return;
     }
-    
+
     onBuscar(ciudad);
     setCiudad('');
   };
@@ -40,21 +40,23 @@ const FormularioBusqueda = ({ onBuscar, onUbicacionActual, cargando = false }) =
             ariaLabel="Nombre de la ciudad"
           />
           {errorValidacion && (
-            <p className="text-red-500 text-sm mt-1" role="alert">{errorValidacion}</p>
+            <p className="text-red-500 text-sm mt-1" role="alert">
+              {errorValidacion}
+            </p>
           )}
         </div>
-        
+
         <div className="flex gap-3">
-          <BotonPrincipal 
-            tipo="submit" 
+          <BotonPrincipal
+            tipo="submit"
             variante="primario"
             deshabilitado={cargando}
             claseAdicional="flex-1"
           >
             {cargando ? 'Buscando...' : '🔍 Buscar'}
           </BotonPrincipal>
-          
-          <BotonPrincipal 
+
+          <BotonPrincipal
             tipo="button"
             variante="secundario"
             onClick={manejarUbicacionActual}

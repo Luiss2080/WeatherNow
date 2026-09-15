@@ -24,7 +24,7 @@ Motor de decisión (módulo puro, compartido cliente/proxy)
   (RF-15), rate limit (RF-16) y normalizar varios proveedores.
 - **Por qué el motor es un módulo puro**: se testea sin React ni red y puede
   ejecutarse en cliente (instantáneo) o en proxy (notificaciones).
-- *Alternativa descartada:* key en `VITE_*` (incumple RF-14 y el principio 3 de
+- _Alternativa descartada:_ key en `VITE_*` (incumple RF-14 y el principio 3 de
   la constitución).
 
 ## 2. Estructura de carpetas prevista

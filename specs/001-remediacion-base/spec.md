@@ -42,7 +42,7 @@ la corrección de los defectos.
   JSX (`@vitejs/plugin-react`), de modo que `npm install` instale exactamente lo
   que la app usa.
 - **RF-2**: EL SISTEMA DEBE compilar con `npm run build` (`tsc --noEmit &&
-  vite build`) sin errores en un clon limpio.
+vite build`) sin errores en un clon limpio.
 - **RF-3**: EL SISTEMA DEBE aplicar Tailwind CSS 4 con la configuración
   soportada por esa versión (`@tailwindcss/postcss` y `@import "tailwindcss"`),
   sin ficheros de configuración obsoletos.
@@ -90,11 +90,11 @@ la corrección de los defectos.
 
 ## Requisitos no funcionales
 
-- **Rendimiento**: el *chunk* JS inicial no debe superar los 500 kB (hoy ~654 kB);
-  se aplicará *code-splitting* de los gráficos.
+- **Rendimiento**: el _chunk_ JS inicial no debe superar los 500 kB (hoy ~654 kB);
+  se aplicará _code-splitting_ de los gráficos.
 - **Accesibilidad**: los controles tienen nombre accesible; errores y estados de
   carga se anuncian con `aria-live`; el foco es visible.
-- **Plataformas**: navegadores *evergreen* y móvil.
+- **Plataformas**: navegadores _evergreen_ y móvil.
 - **Idioma**: interfaz y documentación en español.
 - **Mantenibilidad**: ningún fichero de componente supera ~150 líneas.
 

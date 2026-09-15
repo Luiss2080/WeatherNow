@@ -31,17 +31,12 @@ export const CODIGOS_ERROR = {
 export const MENSAJES_ERROR = {
   [CODIGOS_ERROR.CIUDAD_NO_ENCONTRADA]:
     'No encontramos esa ciudad. Revisa el nombre e inténtalo de nuevo.',
-  [CODIGOS_ERROR.CONFIGURACION]:
-    'La API key no es válida o falta. Revisa la configuración.',
+  [CODIGOS_ERROR.CONFIGURACION]: 'La API key no es válida o falta. Revisa la configuración.',
   [CODIGOS_ERROR.LIMITE]:
     'Se superó el límite de peticiones. Espera un momento e inténtalo de nuevo.',
-  [CODIGOS_ERROR.RED]:
-    'No hay conexión con el servicio del clima. Revisa tu conexión.',
-  [CODIGOS_ERROR.DESCONOCIDO]:
-    'No se pudo obtener el clima. Inténtalo de nuevo.'
+  [CODIGOS_ERROR.RED]: 'No hay conexión con el servicio del clima. Revisa tu conexión.',
+  [CODIGOS_ERROR.DESCONOCIDO]: 'No se pudo obtener el clima. Inténtalo de nuevo.'
 };
 
 export const mensajeDesdeError = (error) =>
-  MENSAJES_ERROR[error?.codigo] ||
-  error?.message ||
-  MENSAJES_ERROR[CODIGOS_ERROR.DESCONOCIDO];
+  MENSAJES_ERROR[error?.codigo] || error?.message || MENSAJES_ERROR[CODIGOS_ERROR.DESCONOCIDO];

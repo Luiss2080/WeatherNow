@@ -4,7 +4,7 @@ import Tarjeta from '../comunes/Tarjeta';
 // Componente para mostrar información de amanecer y atardecer
 const InfoSolarPrincipal = ({ datosClima }) => {
   if (!datosClima) return null;
-  
+
   return (
     <Tarjeta titulo="Información Solar">
       <div className="grid grid-cols-2 gap-6">

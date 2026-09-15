@@ -18,7 +18,13 @@ const GraficoHumedad = lazy(() => import('../componentes/graficos/GraficoHumedad
 
 // Vista principal de la aplicación
 const PaginaPrincipal = () => {
-  const { datosClima, cargando: cargandoClima, error: errorClima, obtenerClima, obtenerClimaPorUbicacion } = useClima();
+  const {
+    datosClima,
+    cargando: cargandoClima,
+    error: errorClima,
+    obtenerClima,
+    obtenerClimaPorUbicacion
+  } = useClima();
   const {
     datosPronostico,
     pronosticoPorDias,
@@ -30,10 +36,7 @@ const PaginaPrincipal = () => {
   const { error: errorUbicacion, obtenerUbicacion } = useGeolocalizacion();
 
   const manejarBusqueda = async (ciudad) => {
-    await Promise.allSettled([
-      obtenerClima(ciudad),
-      obtenerPronosticoExtendido(ciudad)
-    ]);
+    await Promise.allSettled([obtenerClima(ciudad), obtenerPronosticoExtendido(ciudad)]);
   };
 
   const manejarUbicacionActual = async () => {
@@ -111,9 +114,7 @@ const PaginaPrincipal = () => {
           {!cargando && !datosClima && !errorMostrado && (
             <div className="text-center py-16">
               <div className="text-8xl mb-6">🌦️</div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                ¡Bienvenido a WeatherNow!
-              </h2>
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">¡Bienvenido a WeatherNow!</h2>
               <p className="text-xl text-gray-600">
                 Busca una ciudad o usa tu ubicación actual para ver el clima
               </p>

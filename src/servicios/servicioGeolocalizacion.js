@@ -14,7 +14,13 @@ export const obtenerUbicacionActual = () => {
         });
       },
       (error) => {
-        reject(new Error('No se pudo obtener tu ubicación'));
+        if (error.code === 1) {
+          reject(new Error('Permiso de ubicación denegado. Busca una ciudad manualmente.'));
+        } else if (error.code === 3) {
+          reject(new Error('Se agotó el tiempo para obtener tu ubicación.'));
+        } else {
+          reject(new Error('No se pudo obtener tu ubicación.'));
+        }
       },
       {
         enableHighAccuracy: true,

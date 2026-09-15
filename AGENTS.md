@@ -3,8 +3,9 @@
 ## Proyecto
 
 WeatherNow es una aplicación web de clima en español. Hoy es una SPA de React 19
-+ Vite 7 + Tailwind CSS 4 que consulta OpenWeather (clima actual + pronóstico de
-5 días) y lo presenta con tarjetas y gráficos (Recharts).
+
+- Vite 7 + Tailwind CSS 4 que consulta OpenWeather (clima actual + pronóstico de
+  5 días) y lo presenta con tarjetas y gráficos (Recharts).
 
 Dirección de producto acordada (spec 002): evolucionar de "visor de datos" a
 **WeatherNow Decide**, un MVP de consumo que traduce el clima en **decisiones

@@ -8,7 +8,7 @@ intercambiable con cualquier visor de clima y sin propuesta comercial.
 
 **WeatherNow Decide** convierte el clima en **veredictos accionables** para
 actividades y salud, en español, con lugares favoritos y alertas. La promesa es:
-*"Dime si puedo hacer lo que quiero hacer, no cuál es la temperatura."*
+_"Dime si puedo hacer lo que quiero hacer, no cuál es la temperatura."_
 
 El MVP es de consumo, con un plan gratuito y un plan premium (sin publicidad y
 con alertas personalizadas). Para proteger la clave del proveedor, **todo acceso
