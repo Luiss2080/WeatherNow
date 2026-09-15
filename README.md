@@ -33,9 +33,9 @@ alergias?), con lugares favoritos y alertas.
 
 El estado y el plan no se describen aquí "de memoria": viven en las specs.
 
-| Spec                                                           | Qué es                                                            | Estado       |
-| -------------------------------------------------------------- | ----------------------------------------------------------------- | ------------ |
-| [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | En curso     |
+| Spec                                                           | Qué es                                                            | Estado      |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- | ----------- |
+| [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada  |
 | [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | Especificado |
 
 Artefactos SDD: [constitución](docs/constitution.md) ·
@@ -48,23 +48,26 @@ Artefactos SDD: [constitución](docs/constitution.md) ·
 
 ## ✅ Estado real (no lo que nos gustaría)
 
-Lo que **hoy** funciona en un clon limpio:
+Lo que **hoy** funciona en un clon limpio (spec 001):
 
 - `npm install` instala dependencias declaradas (React 19, Vite 7, Tailwind 4).
-- `npm run dev` sirve la SPA en http://localhost:5173.
-- `npm run build` y `npm run typecheck` pasan.
+- `npm run dev`, `npm run build`, `npm run typecheck`, `npm test` y `npm run lint`
+  pasan.
 - Búsqueda por ciudad y "Mi ubicación", tarjetas, pronóstico de 5 días y gráficos.
+- Horas en la **zona horaria de la ciudad** consultada.
+- Errores específicos: ciudad no encontrada, API key, límite de peticiones,
+  conexión y permiso de ubicación.
+- `ErrorBoundary` (un fallo de render no deja la pantalla en blanco) y a11y básica.
+- Bundle inicial ~293 kB (los gráficos se cargan bajo demanda).
 
-Todavía **no** está hecho (con trazabilidad en las specs):
+Todavía **no** está hecho (spec 002):
 
-- Tests (`npm test`) y lint (`npm run lint`) — spec 001.
-- Zona horaria por ciudad, errores específicos, cancelación de peticiones — 001.
-- Backend proxy para no exponer la API key — spec 002.
-- Veredictos, salud, favoritos y alertas — spec 002.
+- Backend proxy para no exponer la API key.
+- Veredictos por actividad, salud (UV/aire), favoritos y alertas.
 
-> ⚠️ **Secretos**: hoy la clave se lee de
-> `src/constantes/configuracionApi.js` (placeholder `TU_API_KEY_AQUI`). **No
-> commitees una clave real**: en producción pasará al proxy (spec 002, RF-14).
+> ⚠️ **Secretos**: la clave se lee de `.env` (`VITE_API_KEY`), que **no se
+> commitea**. Aun así, las variables `VITE_*` viajan al navegador; la protección
+> real llegará con el proxy (spec 002, RF-14). Nunca commitees tu `.env`.
 
 ---
 
@@ -74,8 +77,9 @@ Todavía **no** está hecho (con trazabilidad en las specs):
 # 1️⃣ Instalar dependencias
 npm install
 
-# 2️⃣ Clave de OpenWeather
-# Edita src/constantes/configuracionApi.js y sustituye TU_API_KEY_AQUI.
+# 2️⃣ Configurar la clave de OpenWeather
+# Copia el ejemplo y rellena tu clave:
+#   cp .env.example .env
 # Obtén una gratis en: https://openweathermap.org/api
 
 # 3️⃣ Lanzar
@@ -87,17 +91,16 @@ npm run dev
 
 ## 🛠️ Stack Tecnológico
 
-| Herramienta      | Versión       | Propósito                                                 |
-| ---------------- | ------------- | --------------------------------------------------------- |
-| **React**        | 19            | UI con componentes y hooks                                |
-| **Vite**         | 7             | Build y servidor de desarrollo                            |
-| **Tailwind CSS** | 4 (CSS-first) | Estilos                                                   |
-| **Axios**        | 1.20          | Cliente HTTP                                              |
-| **Recharts**     | 3             | Gráficos                                                  |
-| **TypeScript**   | 5.9           | `typecheck` de los `.jsx` (`allowJs`, sin migrar a `.ts`) |
-
-Pendiente de introducir (spec 001): **Vitest** + Testing Library, **ESLint** y
-**Prettier**.
+| Herramienta              | Versión       | Propósito                                                 |
+| ------------------------ | ------------- | --------------------------------------------------------- |
+| **React**                | 19            | UI con componentes y hooks                                |
+| **Vite**                 | 7             | Build y servidor de desarrollo                            |
+| **Tailwind CSS**         | 4 (CSS-first) | Estilos                                                   |
+| **Axios**                | 1.20          | Cliente HTTP                                              |
+| **Recharts**             | 3             | Gráficos (carga diferida)                                 |
+| **TypeScript**           | 5.9           | `typecheck` de los `.jsx` (`allowJs`, sin migrar a `.ts`) |
+| **Vitest** + Testing Lib | 5 / 16        | Tests unitarios y de componentes                          |
+| **ESLint** + Prettier    | 9 / 3         | Lint y formato                                            |
 
 ---
 
@@ -112,10 +115,13 @@ Pendiente de introducir (spec 001): **Vitest** + Testing Library, **ESLint** y
 │   ├── utilidades/    formateadores · transformadores · validadores
 │   ├── constantes/    configuración · mensajes · iconos · colores
 │   └── vistas/        PaginaPrincipal
+├── 📂 tests/          Vitest + Testing Library
 ├── 📂 docs/           constitution.md
 ├── 📂 specs/          001-remediacion-base · 002-weathernow-decide
+├── 📄 .env.example    variables de entorno (sin secretos)
 ├── 📄 vite.config.js  plugin React
-├── 📄 postcss.config.js  @tailwindcss/postcss
+├── 📄 vitest.config.js  entorno de tests
+├── 📄 eslint.config.js  ESLint (flat config)
 └── 📄 tsconfig.json   typecheck de .jsx
 ```
 
@@ -135,10 +141,14 @@ Pendiente de introducir (spec 001): **Vitest** + Testing Library, **ESLint** y
 ## 🚀 Scripts
 
 ```bash
-npm run dev        # Desarrollo con hot-reload
-npm run build      # typecheck + build de producción
-npm run typecheck  # tsc --noEmit
-npm run preview    # Previsualizar la build
+npm run dev           # Desarrollo con hot-reload
+npm run build         # typecheck + build de producción
+npm run typecheck     # tsc --noEmit
+npm test              # Vitest (una pasada)
+npm run test:watch    # Vitest en modo watch
+npm run lint          # ESLint
+npm run format        # Prettier --write
+npm run preview       # Previsualizar la build
 ```
 
 ---
