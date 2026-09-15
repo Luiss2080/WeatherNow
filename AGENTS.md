@@ -2,27 +2,26 @@
 
 ## Proyecto
 
-WeatherNow es una aplicación web de clima en español. Hoy es una SPA de React 19
-con Vite 7 y Tailwind CSS 4 que consulta OpenWeather (clima actual + pronóstico de
-5 días) y lo presenta con tarjetas y gráficos (Recharts).
-
-Dirección de producto acordada (spec 002): evolucionar de "visor de datos" a
-**WeatherNow Decide**, un MVP de consumo que traduce el clima en **decisiones
-accionables** para actividades y salud (UV, calidad del aire), con lugares
-favoritos y alertas. A partir de esa spec, la app incorpora un **backend proxy**
-para no exponer la API key.
+**WeatherNow Decide** es una aplicación web en español que traduce el clima en
+**decisiones accionables** para actividades y salud. Es una SPA de React 19 con
+Vite 7 y Tailwind CSS 4, más un **proxy Node** (`api/`) que posee la clave y
+agrega datos de OpenWeather (clima y pronóstico) y Open-Meteo (UV, calidad del
+aire y polen). Incluye favoritos, alertas, planes y PWA/offline.
 
 Estructura:
 
 ```
 src/
-├── componentes/   UI (comunes, clima, formularios, graficos, pronostico)
-├── hooks/         estado y efectos (useClima, usePronostico, useGeolocalizacion)
-├── servicios/     acceso a APIs (clienteApi, servicioClima, servicioGeolocalizacion)
-├── utilidades/    lógica pura (formateadores, transformadores, validadores)
+├── componentes/   UI (comunes, clima, decisión, salud, favoritos, alertas, planes)
+├── dominio/       lógica pura (decisión, salud, alertas, planes)
+├── hooks/         estado y efectos (useClima, usePronostico, useAire…)
+├── servicios/     cliente del proxy (/api)
+├── utilidades/    lógica pura (formateadores, transformadores, validadores, tiempo)
+├── almacenamiento/ persistencia local (favoritos, preferencias, alertas, instantánea)
 ├── constantes/    configuración, mensajes, iconos, colores
 └── vistas/        PaginaPrincipal
-api/               proxy (spec 002): configuracion · proxy · cache · limite · proveedores
+api/               proxy: configuracion · proxy · cache · limite · metricas · proveedores
+public/            manifest.webmanifest · sw.js (PWA)
 tests/             tests con Vitest + Testing Library
 docs/              constitución y guías
 specs/             specs, planes y tareas (SDD)

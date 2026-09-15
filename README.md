@@ -36,7 +36,7 @@ El estado y el plan no se describen aquí "de memoria": viven en las specs.
 | Spec                                                           | Qué es                                                            | Estado               |
 | -------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------- |
 | [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada           |
-| [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | En curso (Fases A–C) |
+| [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | Completada (Fases A–F) |
 
 Artefactos SDD: [constitución](docs/constitution.md) ·
 [AGENTS.md](AGENTS.md) · [plan 001](specs/001-remediacion-base/plan.md) ·
@@ -58,7 +58,7 @@ Lo que **hoy** funciona en un clon limpio (spec 001):
 - Errores específicos: ciudad no encontrada, API key, límite de peticiones,
   conexión y permiso de ubicación.
 - `ErrorBoundary` (un fallo de render no deja la pantalla en blanco) y a11y básica.
-- Bundle inicial ~299 kB (los gráficos se cargan bajo demanda).
+- Bundle inicial ~317 kB (los gráficos se cargan bajo demanda).
 
 Decisiones por actividad (spec 002, Fase B):
 
@@ -73,18 +73,32 @@ Personalización (spec 002, Fase C):
 - Autocarga del último lugar consultado al abrir la app.
 - Selector de unidades °C/km/h ↔ °F/mph que afecta a toda la interfaz.
 
-Proxy implementado (spec 002, Fase A):
+Proxy y datos (spec 002, Fase A):
 
 - El navegador solo habla con `/api`; la clave vive en el servidor
   (`OPENWEATHER_API_KEY`), **no en el bundle**.
-- Caché con TTL (clima 10 min, pronóstico 30 min) y rate limiting con cabeceras
-  `X-RateLimit-*`.
+- Caché con TTL (clima 10 min, pronóstico y aire 30 min) y rate limiting con
+  cabeceras `X-RateLimit-*`.
 
-Todavía **no** está hecho (spec 002, Fases D–F):
+Salud (spec 002, Fase D):
 
-- Salud (UV y calidad del aire) integrada en los veredictos.
-- Alertas y límites por plan.
-- PWA/offline, SEO, métricas y QA de accesibilidad final.
+- UV, calidad del aire (US AQI) y polen desde Open-Meteo (sin clave), con avisos
+  para grupos sensibles y recomendación de protección solar.
+- UV y AQI entran en los veredictos por actividad.
+
+Alertas y planes (spec 002, Fase E):
+
+- Alertas in-app por lugar (lluvia, viento, UV, calor, frío).
+- Plan gratuito (3 favoritos, 1 alerta, con publicidad) y premium (ilimitado,
+  sin publicidad); el pago real queda fuera del MVP.
+
+Pulido (spec 002, Fase F):
+
+- PWA con service worker: shell offline y último dato con antigüedad visible.
+- SEO (Open Graph, manifiesto, contenido `<noscript>`) y métricas de uso del
+  proxy en `/api/metricas`.
+- Accesibilidad: enlace "Saltar al contenido", nombres accesibles, `aria-live` y
+  veredictos con texto + símbolo (no solo color).
 
 > ⚠️ **Secretos**: la clave va en `.env` como `OPENWEATHER_API_KEY`, que **no se
 > commitea** y, al no llevar prefijo `VITE_`, **no se incluye en el bundle**.
@@ -133,14 +147,17 @@ Para servir el proxy por separado (p. ej. fuera de Vite): `npm run api` levanta
 ```
 📦 WeatherNow/
 ├── 📂 src/
-│   ├── componentes/   comunes · clima · formularios · graficos · pronostico
-│   ├── hooks/         useClima · usePronostico · useGeolocalizacion
-│   ├── servicios/     clienteApi · servicioClima · servicioGeolocalizacion
-│   ├── utilidades/    formateadores · transformadores · validadores
+│   ├── componentes/   comunes · clima · decision · salud · favoritos · alertas · planes
+│   ├── dominio/       decisión (actividades y franjas) · salud · alertas · planes
+│   ├── hooks/         useClima · usePronostico · useAire · useFavoritos · useAlertas…
+│   ├── servicios/     cliente del proxy (/api)
+│   ├── utilidades/    formateadores · transformadores · validadores · tiempo
+│   ├── almacenamiento/ favoritos · preferencias · alertas · instantánea (localStorage)
 │   ├── constantes/    configuración · mensajes · iconos · colores
 │   └── vistas/        PaginaPrincipal
 ├── 📂 tests/          Vitest + Testing Library
-├── 📂 api/            proxy: configuracion · proxy · cache · limite · proveedores
+├── 📂 api/            proxy: configuracion · proxy · cache · limite · metricas · proveedores
+├── 📂 public/         manifest.webmanifest · sw.js (PWA)
 ├── 📂 docs/           constitution.md
 ├── 📂 specs/          001-remediacion-base · 002-weathernow-decide
 ├── 📄 .env.example    variables de entorno (sin secretos)

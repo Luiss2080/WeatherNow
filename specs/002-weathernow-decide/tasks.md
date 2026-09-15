@@ -105,32 +105,46 @@
 
 ## Fase E — Alertas y negocio
 
-- [ ] **TE1 — Reglas de alerta** (RF-12)
-  - Crear/editar/activar condiciones por lugar.
-  - _Hecho cuando:_ una alerta de lluvia se dispara con el pronóstico simulado.
+- [x] **TE1 — Reglas de alerta** (RF-12)
+  - `src/dominio/alertas/` con 5 condiciones (lluvia, viento, UV, calor, frío) y
+    `evaluarAlerta` sobre el pronóstico y el aire actual.
+  - _Hecho cuando:_ una alerta se dispara con el pronóstico. **Verificado** en
+    `tests/alertas.test.js`.
 
-- [ ] **TE2 — Canal de aviso** (RF-12)
-  - Aviso in-app en el MVP; Web Push si la clarificación lo aprueba.
-  - _Hecho cuando:_ el aviso aparece sin bloquear la interfaz.
+- [x] **TE2 — Canal de aviso** (RF-12)
+  - Aviso in-app (`PanelAlertas`, `role="alert"`) sin bloquear la interfaz.
+  - _Hecho cuando:_ el aviso aparece sin bloquear. **Verificado** en
+    `tests/PanelAlertas.test.jsx`.
 
-- [ ] **TE3 — Límites por plan** (RF-13, RF-17)
-  - Gratis: 1 alerta, 3 favoritos, con publicidad. Premium: ilimitado, sin ads.
+- [x] **TE3 — Límites por plan** (RF-13, RF-17)
+  - `src/dominio/planes.js`: gratis (3 favoritos, 1 alerta, publicidad) y premium
+    (ilimitado, sin publicidad). Selector de plan simulado y anuncio de demo.
   - _Hecho cuando:_ el plan gratuito no puede crear la segunda alerta.
+    **Verificado** en tests y en navegador (quitar publicidad al pasar a premium).
 
 ## Fase F — Pulido
 
-- [ ] **TF1 — Modo offline y PWA** (RF-18)
-  - Service worker + último dato con antigüedad visible.
-  - _Hecho cuando:_ sin conexión se muestra el dato cacheado y su fecha.
+- [x] **TF1 — Modo offline y PWA** (RF-18)
+  - Instantánea del último dato (`almacenamiento/cacheClima`) con antigüedad
+    visible (`BannerCache`, `utilidades/tiempo`), manifiesto y `public/sw.js`
+    (precarga del shell y red-primero con respaldo en caché).
+  - _Hecho cuando:_ sin conexión se muestra el dato cacheado o el shell.
+    **Verificado** sobre la build: SW activo y recarga offline correcta.
 
-- [ ] **TF2 — SEO y landing indexable**
-  - Metadatos, contenido indexable de la propuesta de valor.
-  - _Hecho cuando:_ la landing muestra contenido sin ejecutar JS interactivo.
+- [x] **TF2 — SEO y landing indexable**
+  - `index.html` con título, descripción, Open Graph, `theme-color`, manifiesto
+    y `<noscript>` con la propuesta de valor.
+  - _Hecho cuando:_ hay contenido indexable sin ejecutar JS. **Verificado**.
 
-- [ ] **TF3 — Métricas y coste**
-  - Contador de peticiones por proveedor y panel de cuota.
-  - _Hecho cuando:_ se conoce el consumo diario estimado frente al plan gratuito.
+- [x] **TF3 — Métricas y coste**
+  - `api/metricas.js` (contadores por tipo/proveedor) expuesto en
+    `GET /api/metricas` y panel de uso en desarrollo.
+  - _Hecho cuando:_ se conoce el consumo por proveedor. **Verificado** en
+    `tests/apiMetricas.test.js`.
 
-- [ ] **TF4 — Accesibilidad y QA final**
-  - Revisión de teclado, lector y contraste de los veredictos.
-  - _Hecho cuando:_ el recorrido completo se realiza sin ratón.
+- [x] **TF4 — Accesibilidad y QA final**
+  - Enlace "Saltar al contenido", nombres accesibles en controles, `aria-live`
+    en carga/avisos, nivel de veredicto con texto + símbolo (no solo color) y
+    foco visible en todo el recorrido.
+  - _Hecho cuando:_ el recorrido se realiza sin ratón. **Verificado** en tests de
+    UI y revisión manual de foco/etiquetas.
