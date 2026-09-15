@@ -92,6 +92,6 @@
   - Carga diferida (`lazy`) de los gráficos; revisar manualChunks.
   - _Hecho cuando:_ el chunk inicial baja de 500 kB.
 
-- [ ] **T19 — README veraz**
+- [x] **T19 — README veraz**
   - Corregir badges, inicio rápido, stack y estado; enlazar `specs/`.
   - _Hecho cuando:_ cada afirmación del README es comprobable en el repo.
