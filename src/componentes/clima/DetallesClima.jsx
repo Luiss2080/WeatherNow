@@ -2,7 +2,8 @@ import {
   formatearPorcentaje, 
   formatearVelocidadViento, 
   formatearPresion,
-  formatearVisibilidad 
+  formatearVisibilidad,
+  formatearTemperatura 
 } from '../../utilidades/formateadores';
 import Tarjeta from '../comunes/Tarjeta';
 import ItemDetalle from './ItemDetalle';
