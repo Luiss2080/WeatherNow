@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Artefactos de herramientas
+.playwright-mcp/
+dev.out
+dev.err
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

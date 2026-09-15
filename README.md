@@ -4,11 +4,11 @@
 
 ### *Tu ventana al clima del mundo en tiempo real*
 
-![React](https://img.shields.io/badge/React-18+-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-3.0+-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-5.0+-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 
-[🚀 Inicio Rápido](#-inicio-rápido) • [✨ Características](#-qué-hace-especial-a-weathernow) • [📁 Estructura](#-arquitectura-del-proyecto)
+[🚀 Inicio Rápido](#-inicio-rápido) • [🧭 Rumbo](#-rumbo-del-producto) • [📁 Estructura](#-arquitectura-del-proyecto)
 
 </div>
 
@@ -16,36 +16,55 @@
 
 ## 💡 ¿Qué es WeatherNow?
 
-**WeatherNow** es una aplicación web moderna que transforma datos meteorológicos en una experiencia visual interactiva. Consulta el clima de cualquier ciudad del mundo, visualiza tendencias con gráficos dinámicos y planifica tu día con pronósticos precisos.
+**WeatherNow** es una aplicación web en español que consulta el clima de
+cualquier ciudad (OpenWeather) y lo presenta con tarjetas y gráficos.
 
-> 🎯 **Perfecta para**: Desarrolladores que buscan un proyecto modular y bien estructurado, o usuarios que quieren una app de clima limpia y funcional.
+Hoy es un **visor de datos**. El rumbo acordado es evolucionar a
+**WeatherNow Decide**: convertir el clima en **decisiones accionables**
+(¿salgo a correr?, ¿me protejo del sol?, ¿está el aire bien para mis
+alergias?), con lugares favoritos y alertas.
+
+> 📌 Este repositorio se desarrolla con **Spec-Driven Development (SDD)**: la
+> especificación manda y el código debe decir la verdad. Ver [Rumbo](#-rumbo-del-producto).
 
 ---
 
-## ✨ ¿Qué hace especial a WeatherNow?
+## 🧭 Rumbo del producto
 
-<table>
-<tr>
-<td width="50%">
+El estado y el plan no se describen aquí "de memoria": viven en las specs.
 
-### 🌍 **Inteligente**
-- 🔍 Búsqueda global de ciudades
-- 📍 Auto-detección de ubicación
-- 🌡️ Datos en tiempo real
-- 🌅 Info solar (amanecer/atardecer)
+| Spec | Qué es | Estado |
+|------|--------|--------|
+| [001 — Remediación base](specs/001-remediacion-base/spec.md) | Sanear el proyecto: dependencias, build, bugs, errores, tests. | En curso |
+| [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | Especificado |
 
-</td>
-<td width="50%">
+Artefactos SDD: [constitución](docs/constitution.md) ·
+[AGENTS.md](AGENTS.md) · [plan 001](specs/001-remediacion-base/plan.md) ·
+[tareas 001](specs/001-remediacion-base/tasks.md) ·
+[plan 002](specs/002-weathernow-decide/plan.md) ·
+[tareas 002](specs/002-weathernow-decide/tasks.md).
 
-### 📊 **Visual**
-- 📈 Gráficos interactivos (Recharts)
-- 🎨 UI moderna con Tailwind
-- 📱 Diseño responsivo
-- ⚡ Rendimiento optimizado (Vite)
+---
 
-</td>
-</tr>
-</table>
+## ✅ Estado real (no lo que nos gustaría)
+
+Lo que **hoy** funciona en un clon limpio:
+
+- `npm install` instala dependencias declaradas (React 19, Vite 7, Tailwind 4).
+- `npm run dev` sirve la SPA en http://localhost:5173.
+- `npm run build` y `npm run typecheck` pasan.
+- Búsqueda por ciudad y "Mi ubicación", tarjetas, pronóstico de 5 días y gráficos.
+
+Todavía **no** está hecho (con trazabilidad en las specs):
+
+- Tests (`npm test`) y lint (`npm run lint`) — spec 001.
+- Zona horaria por ciudad, errores específicos, cancelación de peticiones — 001.
+- Backend proxy para no exponer la API key — spec 002.
+- Veredictos, salud, favoritos y alertas — spec 002.
+
+> ⚠️ **Secretos**: hoy la clave se lee de
+> `src/constantes/configuracionApi.js` (placeholder `TU_API_KEY_AQUI`). **No
+> commitees una clave real**: en producción pasará al proxy (spec 002, RF-14).
 
 ---
 
@@ -55,73 +74,50 @@
 # 1️⃣ Instalar dependencias
 npm install
 
-# 2️⃣ Configurar API Key
-# Edita: src/constantes/configuracionApi.js
-# Obtén tu key GRATIS en: https://openweathermap.org/api
+# 2️⃣ Clave de OpenWeather
+# Edita src/constantes/configuracionApi.js y sustituye TU_API_KEY_AQUI.
+# Obtén una gratis en: https://openweathermap.org/api
 
-# 3️⃣ Lanzar aplicación
+# 3️⃣ Lanzar
 npm run dev
-
-# 🎉 Abre http://localhost:5173
+# 🎉 http://localhost:5173
 ```
-
-<details>
-<summary><b>🔑 ¿Cómo obtener mi API Key?</b></summary>
-
-1. Regístrate en [OpenWeather](https://openweathermap.org/api) (gratis)
-2. Copia tu API Key
-3. Pégala en `src/constantes/configuracionApi.js`:
-   ```javascript
-   API_KEY: 'tu_api_key_aqui'
-   ```
-</details>
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-| Herramienta | Propósito | Por qué |
-|------------|-----------|---------|
-| **React** | UI Framework | Componentes reutilizables y estado reactivo |
-| **TailwindCSS** | Estilos | Desarrollo rápido con utility-first |
-| **Axios** | HTTP Client | Peticiones API simplificadas |
-| **Recharts** | Gráficos | Visualización de datos elegante |
-| **Vite** | Build Tool | HMR ultrarrápido y builds optimizados |
+| Herramienta | Versión | Propósito |
+|------------|---------|-----------|
+| **React** | 19 | UI con componentes y hooks |
+| **Vite** | 7 | Build y servidor de desarrollo |
+| **Tailwind CSS** | 4 (CSS-first) | Estilos |
+| **Axios** | 1.20 | Cliente HTTP |
+| **Recharts** | 3 | Gráficos |
+| **TypeScript** | 5.9 | `typecheck` de los `.jsx` (`allowJs`, sin migrar a `.ts`) |
+
+Pendiente de introducir (spec 001): **Vitest** + Testing Library, **ESLint** y
+**Prettier**.
 
 ---
 
 ## 📁 Arquitectura del Proyecto
 
-> 🏗️ **Filosofía**: Código modular, archivos pequeños, nombres descriptivos en español.
-
 ```
 📦 WeatherNow/
 ├── 📂 src/
-│   ├── 🎨 componentes/
-│   │   ├── comunes/          → 7 componentes UI reutilizables
-│   │   ├── clima/            → 4 componentes de datos climáticos
-│   │   ├── formularios/      → Búsqueda y controles
-│   │   ├── graficos/         → Visualizaciones interactivas
-│   │   └── pronostico/       → Componentes de pronóstico
-│   │
-│   ├── 🔧 hooks/             → 3 custom hooks (clima, pronóstico, geo)
-│   ├── 🌐 servicios/         → APIs de clima y geolocalización
-│   ├── 🛠️ utilidades/        → Formateadores, validadores, transformadores
-│   ├── 📊 constantes/        → Config API, mensajes, iconos, colores
-│   └── 🖼️ vistas/            → Página principal integrada
-│
-└── 📄 Archivos raíz → index.html, vite.config, tailwind.config
+│   ├── componentes/   comunes · clima · formularios · graficos · pronostico
+│   ├── hooks/         useClima · usePronostico · useGeolocalizacion
+│   ├── servicios/     clienteApi · servicioClima · servicioGeolocalizacion
+│   ├── utilidades/    formateadores · transformadores · validadores
+│   ├── constantes/    configuración · mensajes · iconos · colores
+│   └── vistas/        PaginaPrincipal
+├── 📂 docs/           constitution.md
+├── 📂 specs/          001-remediacion-base · 002-weathernow-decide
+├── 📄 vite.config.js  plugin React
+├── 📄 postcss.config.js  @tailwindcss/postcss
+└── 📄 tsconfig.json   typecheck de .jsx
 ```
-
-<details>
-<summary><b>📊 Estadísticas del Código</b></summary>
-
-- **30+ archivos** organizados por responsabilidad única
-- **0 archivos** con más de 150 líneas (mantenibilidad)
-- **100%** nombres en español (autodocumentado)
-- **Separación** clara entre lógica, UI y datos
-
-</details>
 
 ---
 
@@ -129,72 +125,37 @@ npm run dev
 
 | Acción | Resultado |
 |--------|-----------|
-| 🔍 **Buscar ciudad** | Escribe "Madrid", "Tokyo", "New York"... |
-| 📍 **Mi ubicación** | Detecta tu clima automáticamente |
-| 📊 **Ver gráficos** | Temperatura y humedad por horas |
-| 📅 **Pronóstico** | Clima de los próximos 5 días |
+| 🔍 **Buscar ciudad** | Madrid, Tokyo, New York… |
+| 📍 **Mi ubicación** | Clima de tu posición |
+| 📊 **Ver gráficos** | Temperatura y humedad por franjas |
+| 📅 **Pronóstico** | Próximos 5 días |
 
 ---
 
-## 🎨 Componentes Destacados
-
-### 🧩 Componentes Comunes (7)
-```
-BotonPrincipal → CampoTexto → Tarjeta → Cargador
-MensajeError → Encabezado → PiePagina
-```
-
-### 🌡️ Componentes de Clima (4)
-```
-TarjetaClimaPrincipal → DetallesClima
-ItemDetalle → InfoSolarPrincipal
-```
-
-### 🎣 Hooks Personalizados (3)
-- `useClima()` - Gestiona datos del clima actual
-- `usePronostico()` - Maneja pronósticos extendidos
-- `useGeolocalizacion()` - Detecta ubicación del usuario
-
----
-
-## 🚀 Scripts Disponibles
+## 🚀 Scripts
 
 ```bash
-npm run dev      # 🔥 Desarrollo con hot-reload
-npm run build    # 📦 Build de producción
-npm run preview  # 👀 Preview de la build
+npm run dev        # Desarrollo con hot-reload
+npm run build      # typecheck + build de producción
+npm run typecheck  # tsc --noEmit
+npm run preview    # Previsualizar la build
 ```
 
 ---
 
-## 🎯 Características Técnicas
+## 📝 Cómo se trabaja aquí (SDD)
 
-✅ **Arquitectura modular** - Fácil de mantener y escalar  
-✅ **Custom Hooks** - Lógica reutilizable y testeable  
-✅ **Transformadores de datos** - API limpia → UI amigable  
-✅ **Validaciones** - Entradas seguras y confiables  
-✅ **Responsivo** - Funciona en móvil, tablet y desktop  
-✅ **Optimizado** - Carga rápida y rendimiento fluido  
+1. **Constitución** → principios en `docs/constitution.md`.
+2. **Spec** → requisitos `RF-x` en notación EARS en `specs/NNN-nombre/spec.md`.
+3. **Plan** → decisiones técnicas en `plan.md`.
+4. **Tareas** → checklist verificable en `tasks.md`.
+5. **Implementación** una tarea a la vez; **validación** RF por RF.
 
----
-
-## 📝 Próximas Mejoras
-
-- [ ] 🌙 Modo oscuro/claro
-- [ ] 🗺️ Mapa interactivo del clima
-- [ ] 🔔 Alertas meteorológicas
-- [ ] 💾 Guardar ciudades favoritas
-- [ ] 🌐 Multi-idioma
+Ningún comportamiento se implementa sin un `RF-x` que lo respalde.
 
 ---
 
 <div align="center">
-
-### 🌟 ¿Te gusta el proyecto?
-
-**¡Dale una estrella ⭐ y compártelo!**
-
----
 
 Hecho con ❤️ usando React + TailwindCSS
 
