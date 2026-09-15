@@ -27,7 +27,7 @@ Motor de decisión (módulo puro, compartido cliente/proxy)
 - _Alternativa descartada:_ key en `VITE_*` (incumple RF-14 y el principio 3 de
   la constitución).
 
-## 2. Estructura de carpetas (Fase A implementada)
+## 2. Estructura de carpetas (Fases A–F implementadas)
 
 ```
 api/                          # proxy (Node)
@@ -36,22 +36,31 @@ api/                          # proxy (Node)
   cache.js                    # caché en memoria con TTL (reloj inyectable)
   limite.js                   # rate limiting por cliente
   errores.js                  # códigos y estados de error
-  proveedores/openweather.js  # cliente del proveedor (clave solo aquí)
+  metricas.js                 # contadores por tipo/proveedor (GET /api/metricas)
+  proveedores/openweather.js  # clima y pronóstico (la clave solo vive aquí)
+  proveedores/openmeteo.js    # UV, calidad del aire y polen (sin clave)
   pluginVite.js               # middleware de desarrollo en /api
   servidor.js                 # servidor Node para producción (puerto 8787)
 src/
-  dominio/decision/           # motor de decisión (puro) — Fase B
-    actividades.js            # umbrales por actividad
-    evaluarActividad.js       # clima + aire + uv -> veredicto + motivo
-    mejorFranja.js
+  dominio/
+    decision/                 # motor de decisión (puro)
+      actividades.js          # umbrales por actividad (incluye UV y AQI)
+      evaluarActividad.js     # clima + aire -> veredicto + motivo
+      franjas.js              # condiciones y mejor franja
+    salud/                    # índices UV y calidad del aire
+    alertas/                  # condiciones y evaluación de alertas
+    planes.js                 # límites gratis/premium
+  almacenamiento/             # favoritos, preferencias, alertas e instantánea
   servicios/                  # cliente del proxy (no del proveedor)
-  almacenamiento/             # favoritos, alertas y caché en localStorage
+public/                       # manifest.webmanifest y sw.js (PWA)
 ```
 
-> **Normalización**: en Fase A el proxy reenvía la respuesta del proveedor y la
-> normalización de campos vive en `src/utilidades/transformadores.js` (lado
-> cliente), que ya tolera campos ausentes. Moverla al proxy es una mejora
-> futura, no un requisito de RF-14..16.
+> **Normalización**: el proxy de clima/pronóstico reenvía la respuesta del
+> proveedor y la normalización de campos vive en
+> `src/utilidades/transformadores.js` (lado cliente), que tolera campos ausentes.
+> El proveedor de aire sí normaliza en el servidor (formato distinto). Mover la
+> normalización del clima al proxy es una mejora futura, no un requisito de
+> RF-14..16.
 
 ## 3. Modelo de datos (cliente)
 
