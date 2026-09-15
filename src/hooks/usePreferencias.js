@@ -5,12 +5,15 @@ import { leerPreferencias, guardarPreferencias } from '../almacenamiento/prefere
 export const usePreferencias = () => {
   const [preferencias, setPreferencias] = useState(() => leerPreferencias());
 
-  const cambiarUnidades = (unidades) =>
+  const actualizar = (cambios) =>
     setPreferencias((previas) => {
-      const siguientes = { ...previas, unidades };
+      const siguientes = { ...previas, ...cambios };
       guardarPreferencias(siguientes);
       return siguientes;
     });
 
-  return { preferencias, cambiarUnidades };
+  const cambiarUnidades = (unidades) => actualizar({ unidades });
+  const cambiarPlan = (plan) => actualizar({ plan });
+
+  return { preferencias, cambiarUnidades, cambiarPlan };
 };

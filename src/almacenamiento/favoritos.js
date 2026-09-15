@@ -49,7 +49,7 @@ export const reordenarFavoritos = (favoritos, desde, hasta) => {
 export const leerFavoritos = () => {
   const datos = leer(CLAVE_FAVORITOS, []);
   if (!Array.isArray(datos)) return [];
-  return datos.filter(esLugarValido).slice(0, LIMITE_FAVORITOS_GRATIS);
+  return datos.filter(esLugarValido);
 };
 
 export const guardarFavoritos = (favoritos) => escribir(CLAVE_FAVORITOS, favoritos);
