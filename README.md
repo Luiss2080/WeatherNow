@@ -36,7 +36,7 @@ El estado y el plan no se describen aquí "de memoria": viven en las specs.
 | Spec                                                           | Qué es                                                            | Estado            |
 | -------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------- |
 | [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada        |
-| [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | En curso (Fase A) |
+| [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | En curso (Fases A–B) |
 
 Artefactos SDD: [constitución](docs/constitution.md) ·
 [AGENTS.md](AGENTS.md) · [plan 001](specs/001-remediacion-base/plan.md) ·
@@ -58,7 +58,14 @@ Lo que **hoy** funciona en un clon limpio (spec 001):
 - Errores específicos: ciudad no encontrada, API key, límite de peticiones,
   conexión y permiso de ubicación.
 - `ErrorBoundary` (un fallo de render no deja la pantalla en blanco) y a11y básica.
-- Bundle inicial ~293 kB (los gráficos se cargan bajo demanda).
+- Bundle inicial ~299 kB (los gráficos se cargan bajo demanda).
+
+Decisiones por actividad (spec 002, Fase B):
+
+- Panel "¿Puedo hacerlo hoy?" con veredicto (favorable / precaución / no
+  recomendado) para correr, ciclismo, caminar, evento al aire libre, tender la
+  ropa y lavar el auto.
+- Motivo legible, mejor franja del día y aviso de variables sin datos.
 
 Proxy implementado (spec 002, Fase A):
 
@@ -67,9 +74,12 @@ Proxy implementado (spec 002, Fase A):
 - Caché con TTL (clima 10 min, pronóstico 30 min) y rate limiting con cabeceras
   `X-RateLimit-*`.
 
-Todavía **no** está hecho (spec 002, Fases B–F):
+Todavía **no** está hecho (spec 002, Fases C–F):
 
-- Veredictos por actividad, salud (UV/aire), favoritos y alertas.
+- Favoritos, último lugar y unidades configurables.
+- Salud (UV y calidad del aire) integrada en los veredictos.
+- Alertas y límites por plan.
+- PWA/offline, SEO, métricas y QA de accesibilidad final.
 
 > ⚠️ **Secretos**: la clave va en `.env` como `OPENWEATHER_API_KEY`, que **no se
 > commitea** y, al no llevar prefijo `VITE_`, **no se incluye en el bundle**.

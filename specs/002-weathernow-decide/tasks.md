@@ -40,21 +40,28 @@
 
 ## Fase B — Motor de decisión
 
-- [ ] **TB1 — Tabla de reglas por actividad** (RF-1, RF-2)
-  - Umbrales de temperatura, viento, `pop`, UV y AQI por actividad.
+- [x] **TB1 — Tabla de reglas por actividad** (RF-1, RF-2)
+  - Umbrales de temperatura, viento, `pop` y UV por actividad en
+    `src/dominio/decision/actividades.js` (6 actividades).
+  - UV/AQI sin regla cuando no aplican; se integrarán en Fase D.
   - _Hecho cuando:_ existe un test por actividad en los tres niveles.
+    **Verificado** en `tests/decisionActividades.test.js`.
 
-- [ ] **TB2 — `evaluarActividad` y motivos** (RF-4, RF-7)
-  - Veredicto por peor variable + frase explicativa; marca dato ausente.
-  - _Hecho cuando:_ cada veredicto incluye un motivo legible.
+- [x] **TB2 — `evaluarActividad` y motivos** (RF-4, RF-7)
+  - Veredicto por la peor variable + motivo legible; `datosAusentes` cuando una
+    variable llega como `null`.
+  - _Hecho cuando:_ cada veredicto incluye un motivo legible. **Verificado**.
 
-- [ ] **TB3 — `mejorFranja`** (RF-3)
-  - Puntuar franjas del pronóstico y devolver la mejor.
+- [x] **TB3 — `mejorFranja`** (RF-3)
+  - Puntúa las franjas por nivel y, a igualdad, por cercanía al rango ideal.
   - _Hecho cuando:_ un test comprueba la franja elegida con datos conocidos.
+    **Verificado** en `tests/decisionFranjas.test.js`.
 
-- [ ] **TB4 — UI de veredictos** (RF-1)
-  - Tarjeta por actividad con nivel, motivo y mejor franja; sin depender del color.
+- [x] **TB4 — UI de veredictos** (RF-1)
+  - `PanelDecisiones` + `TarjetaActividad`: nivel, motivo y mejor franja; el
+    nivel no depende solo del color (texto + símbolo).
   - _Hecho cuando:_ se ve el veredicto de las 6 actividades del MVP.
+    **Verificado** en `tests/PanelDecisiones.test.jsx` e integrado en la vista.
 
 ## Fase C — Personalización
 
