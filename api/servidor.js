@@ -1,12 +1,16 @@
 import { createServer } from 'node:http';
 import { crearConfiguracion } from './configuracion.js';
 import { crearClienteOpenWeather } from './proveedores/openweather.js';
+import { crearClienteOpenMeteo } from './proveedores/openmeteo.js';
 import { crearManejadorApi } from './proxy.js';
 
 // Servidor del proxy para despliegues Node (sin Vite).
 const puerto = Number(process.env.API_PUERTO || 8787);
 const configuracion = crearConfiguracion(process.env);
-const cliente = crearClienteOpenWeather({ configuracion });
+const cliente = {
+  ...crearClienteOpenWeather({ configuracion }),
+  ...crearClienteOpenMeteo({ configuracion })
+};
 const manejador = crearManejadorApi({ configuracion, cliente });
 
 const servidor = createServer(async (req, res) => {

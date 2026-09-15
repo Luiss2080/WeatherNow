@@ -6,5 +6,6 @@ export const API_CONFIG = {
 
 export const ENDPOINTS = {
   CLIMA_ACTUAL: '/clima',
-  PRONOSTICO: '/pronostico'
+  PRONOSTICO: '/pronostico',
+  AIRE: '/aire'
 };

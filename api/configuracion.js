@@ -10,7 +10,11 @@ export const crearConfiguracion = (entorno = {}) => ({
   },
   cache: {
     climaTtlMs: Number(entorno.API_CLIMA_TTL_MS || 10 * MINUTO_MS),
-    pronosticoTtlMs: Number(entorno.API_PRONOSTICO_TTL_MS || 30 * MINUTO_MS)
+    pronosticoTtlMs: Number(entorno.API_PRONOSTICO_TTL_MS || 30 * MINUTO_MS),
+    aireTtlMs: Number(entorno.API_AIRE_TTL_MS || 30 * MINUTO_MS)
+  },
+  aire: {
+    urlBase: entorno.OPENMETEO_URL_BASE || 'https://air-quality-api.open-meteo.com/v1/air-quality'
   },
   limite: {
     maximo: Number(entorno.API_MAX_PETICIONES || 60),

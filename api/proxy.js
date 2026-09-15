@@ -3,23 +3,39 @@ import { crearCache } from './cache.js';
 import { crearLimitador } from './limite.js';
 import { cuerpoDeError, estadoParaCodigo } from './errores.js';
 
-const TIPO_POR_RUTA = {
-  '/clima': 'clima',
-  '/pronostico': 'pronostico'
+// Rutas del proxy. `soloCoordenadas` obliga a usar lat/lon (el aire no admite q).
+const RUTAS = {
+  '/clima': {
+    tipo: 'clima',
+    soloCoordenadas: false,
+    ejecutar: (cliente, parametros) => cliente.clima(parametros)
+  },
+  '/pronostico': {
+    tipo: 'pronostico',
+    soloCoordenadas: false,
+    ejecutar: (cliente, parametros) => cliente.pronostico(parametros)
+  },
+  '/aire': {
+    tipo: 'aire',
+    soloCoordenadas: true,
+    ejecutar: (cliente, parametros) => cliente.aire(parametros)
+  }
+};
+
+const normalizarCoordenadas = (parametros) => {
+  const lat = Number(parametros.lat);
+  const lon = Number(parametros.lon);
+  const validas =
+    Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180;
+  return validas ? { lat, lon } : null;
 };
 
 // Valida y normaliza los parámetros de entrada (ciudad o coordenadas).
-const normalizarParametros = (parametros) => {
+const normalizarParametros = (parametros, { soloCoordenadas }) => {
+  if (soloCoordenadas) return normalizarCoordenadas(parametros);
   const ciudad = (parametros.q || '').trim();
   if (ciudad.length >= 2) return { q: ciudad };
-
-  const lat = Number(parametros.lat);
-  const lon = Number(parametros.lon);
-  const coordenadasValidas =
-    Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180;
-  if (coordenadasValidas) return { lat, lon };
-
-  return null;
+  return normalizarCoordenadas(parametros);
 };
 
 const cabecerasCuota = (cuota) => ({
@@ -36,18 +52,24 @@ export const crearManejadorApi = ({
 }) => {
   const responder = (estado, cuerpo, cabeceras = {}) => ({ estado, cuerpo, cabeceras });
 
+  const ttlPorTipo = {
+    clima: configuracion.cache.climaTtlMs,
+    pronostico: configuracion.cache.pronosticoTtlMs,
+    aire: configuracion.cache.aireTtlMs
+  };
+
   const manejar = async ({ ruta, parametros = {}, clienteId = 'anonimo' }) => {
     const cuota = limitador.permitir(clienteId);
     if (!cuota.permitido) {
       return responder(429, cuerpoDeError(CODIGOS_ERROR.LIMITE), cabecerasCuota(cuota));
     }
 
-    const tipo = TIPO_POR_RUTA[ruta];
-    if (!tipo) {
+    const definicion = RUTAS[ruta];
+    if (!definicion) {
       return responder(404, { codigo: 'NO_ENCONTRADO', mensaje: 'Recurso no encontrado' });
     }
 
-    const parametrosNormalizados = normalizarParametros(parametros);
+    const parametrosNormalizados = normalizarParametros(parametros, definicion);
     if (!parametrosNormalizados) {
       return responder(400, {
         codigo: 'PARAMETROS',
@@ -55,21 +77,15 @@ export const crearManejadorApi = ({
       });
     }
 
-    const claveCache = `${tipo}:${JSON.stringify(parametrosNormalizados)}`;
+    const claveCache = `${definicion.tipo}:${JSON.stringify(parametrosNormalizados)}`;
     const enCache = cache.obtener(claveCache);
     if (enCache.acertado) {
       return responder(200, enCache.valor, { 'X-Cache': 'HIT', ...cabecerasCuota(cuota) });
     }
 
-    const ttl =
-      tipo === 'clima' ? configuracion.cache.climaTtlMs : configuracion.cache.pronosticoTtlMs;
-
     try {
-      const datos =
-        tipo === 'clima'
-          ? await cliente.clima(parametrosNormalizados)
-          : await cliente.pronostico(parametrosNormalizados);
-      cache.guardar(claveCache, datos, ttl);
+      const datos = await definicion.ejecutar(cliente, parametrosNormalizados);
+      cache.guardar(claveCache, datos, ttlPorTipo[definicion.tipo]);
       return responder(200, datos, { 'X-Cache': 'MISS', ...cabecerasCuota(cuota) });
     } catch (error) {
       const codigo = error?.codigo || CODIGOS_ERROR.DESCONOCIDO;

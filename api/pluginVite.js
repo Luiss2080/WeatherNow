@@ -1,5 +1,6 @@
 import { crearConfiguracion } from './configuracion.js';
 import { crearClienteOpenWeather } from './proveedores/openweather.js';
+import { crearClienteOpenMeteo } from './proveedores/openmeteo.js';
 import { crearManejadorApi } from './proxy.js';
 
 const enviarJson = (res, resultado) => {
@@ -14,7 +15,10 @@ const enviarJson = (res, resultado) => {
 // Plugin de Vite: monta el proxy en `/api` durante el desarrollo.
 export const pluginApi = (entorno = {}) => {
   const configuracion = crearConfiguracion(entorno);
-  const cliente = crearClienteOpenWeather({ configuracion });
+  const cliente = {
+    ...crearClienteOpenWeather({ configuracion }),
+    ...crearClienteOpenMeteo({ configuracion })
+  };
   const manejador = crearManejadorApi({ configuracion, cliente });
 
   return {
