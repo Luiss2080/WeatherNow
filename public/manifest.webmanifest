@@ -1,0 +1,18 @@
+{
+  "name": "WeatherNow Decide",
+  "short_name": "WeatherNow",
+  "description": "Decisiones accionables a partir del clima: actividades y salud.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eff6ff",
+  "theme_color": "#2563eb",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

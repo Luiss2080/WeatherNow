@@ -1,22 +1,26 @@
 import { CODIGOS_ERROR } from '../src/constantes/mensajes.js';
 import { crearCache } from './cache.js';
 import { crearLimitador } from './limite.js';
+import { crearMetricas } from './metricas.js';
 import { cuerpoDeError, estadoParaCodigo } from './errores.js';
 
 // Rutas del proxy. `soloCoordenadas` obliga a usar lat/lon (el aire no admite q).
 const RUTAS = {
   '/clima': {
     tipo: 'clima',
+    proveedor: 'openweather',
     soloCoordenadas: false,
     ejecutar: (cliente, parametros) => cliente.clima(parametros)
   },
   '/pronostico': {
     tipo: 'pronostico',
+    proveedor: 'openweather',
     soloCoordenadas: false,
     ejecutar: (cliente, parametros) => cliente.pronostico(parametros)
   },
   '/aire': {
     tipo: 'aire',
+    proveedor: 'openmeteo',
     soloCoordenadas: true,
     ejecutar: (cliente, parametros) => cliente.aire(parametros)
   }
@@ -48,7 +52,8 @@ export const crearManejadorApi = ({
   configuracion,
   cliente,
   cache = crearCache(),
-  limitador = crearLimitador(configuracion.limite)
+  limitador = crearLimitador(configuracion.limite),
+  metricas = crearMetricas()
 }) => {
   const responder = (estado, cuerpo, cabeceras = {}) => ({ estado, cuerpo, cabeceras });
 
@@ -64,10 +69,17 @@ export const crearManejadorApi = ({
       return responder(429, cuerpoDeError(CODIGOS_ERROR.LIMITE), cabecerasCuota(cuota));
     }
 
+    if (ruta === '/metricas') {
+      return responder(200, metricas.resumen());
+    }
+
     const definicion = RUTAS[ruta];
     if (!definicion) {
       return responder(404, { codigo: 'NO_ENCONTRADO', mensaje: 'Recurso no encontrado' });
     }
+
+    const { tipo, proveedor } = definicion;
+    metricas.registrarPeticion(tipo, proveedor);
 
     const parametrosNormalizados = normalizarParametros(parametros, definicion);
     if (!parametrosNormalizados) {
@@ -77,17 +89,21 @@ export const crearManejadorApi = ({
       });
     }
 
-    const claveCache = `${definicion.tipo}:${JSON.stringify(parametrosNormalizados)}`;
+    const claveCache = `${tipo}:${JSON.stringify(parametrosNormalizados)}`;
     const enCache = cache.obtener(claveCache);
     if (enCache.acertado) {
+      metricas.registrarAcierto(tipo, proveedor);
       return responder(200, enCache.valor, { 'X-Cache': 'HIT', ...cabecerasCuota(cuota) });
     }
 
+    metricas.registrarFallo(tipo, proveedor);
+
     try {
       const datos = await definicion.ejecutar(cliente, parametrosNormalizados);
-      cache.guardar(claveCache, datos, ttlPorTipo[definicion.tipo]);
+      cache.guardar(claveCache, datos, ttlPorTipo[tipo]);
       return responder(200, datos, { 'X-Cache': 'MISS', ...cabecerasCuota(cuota) });
     } catch (error) {
+      metricas.registrarError(tipo, proveedor);
       const codigo = error?.codigo || CODIGOS_ERROR.DESCONOCIDO;
       return responder(estadoParaCodigo(codigo), cuerpoDeError(codigo), cabecerasCuota(cuota));
     }
