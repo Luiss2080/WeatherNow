@@ -107,14 +107,14 @@ Preferencias { unidades: 'metric'|'imperial', plan: 'gratis'|'premium' }
 - El "pago" del MVP se simula mediante un flag local; la pasarela real queda
   fuera de alcance hasta validar interés.
 
-## 8. Fases de entrega
+## 8. Fases de entrega (todas implementadas)
 
-1. **Fase A — Cimientos**: proxy + caché + endpoints normalizados + tests.
-2. **Fase B — Motor de decisión**: veredictos, mejor franja, UI de tarjetas.
-3. **Fase C — Personalización**: favoritos, preferencias, último lugar.
-4. **Fase D — Salud**: UV y calidad del aire integrados en los veredictos.
-5. **Fase E — Alertas y negocio**: reglas, límites por plan, aviso in-app.
-6. **Fase F — Pulido**: PWA/offline, SEO, accesibilidad, métricas.
+1. **Fase A — Cimientos** ✅: proxy + caché + endpoints + tests.
+2. **Fase B — Motor de decisión** ✅: veredictos, mejor franja, UI de tarjetas.
+3. **Fase C — Personalización** ✅: favoritos, preferencias, último lugar.
+4. **Fase D — Salud** ✅: UV y calidad del aire integrados en los veredictos.
+5. **Fase E — Alertas y negocio** ✅: reglas, límites por plan, aviso in-app.
+6. **Fase F — Pulido** ✅: PWA/offline, SEO, accesibilidad, métricas.
 
 ## 9. Riesgos
 
