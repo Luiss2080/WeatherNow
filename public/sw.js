@@ -8,7 +8,9 @@ const precachear = async () => {
   await cache.put('/', respuesta.clone());
 
   const html = await respuesta.text();
-  const assets = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"/g)].map((coincidencia) => coincidencia[1]);
+  const assets = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"/g)].map(
+    (coincidencia) => coincidencia[1]
+  );
   await cache.addAll(assets);
 };
 
@@ -24,7 +26,9 @@ self.addEventListener('activate', (evento) => {
   evento.waitUntil(
     caches
       .keys()
-      .then((claves) => Promise.all(claves.filter((clave) => clave !== CACHE).map((clave) => caches.delete(clave))))
+      .then((claves) =>
+        Promise.all(claves.filter((clave) => clave !== CACHE).map((clave) => caches.delete(clave)))
+      )
       .then(() => self.clients.claim())
   );
 });
