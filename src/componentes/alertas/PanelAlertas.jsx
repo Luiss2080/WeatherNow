@@ -5,7 +5,15 @@ import { TIPOS_ALERTA } from '../../dominio/alertas/condiciones';
 const ListaTipos = Object.values(TIPOS_ALERTA);
 
 // Panel para crear y gestionar alertas del lugar actual (spec 002, RF-12).
-const PanelAlertas = ({ lugar, alertas, disparadas = [], limite, onAgregar, onEliminar, onAlternar }) => {
+const PanelAlertas = ({
+  lugar,
+  alertas,
+  disparadas = [],
+  limite,
+  onAgregar,
+  onEliminar,
+  onAlternar
+}) => {
   const [condicion, setCondicion] = useState(ListaTipos[0].id);
   const [umbral, setUmbral] = useState(ListaTipos[0].umbralPorDefecto);
   const [mensaje, setMensaje] = useState('');
@@ -79,9 +87,7 @@ const PanelAlertas = ({ lugar, alertas, disparadas = [], limite, onAgregar, onEl
             Crear alerta
           </button>
 
-          {alLimite && (
-            <span className="text-sm text-amber-700">Límite de tu plan alcanzado.</span>
-          )}
+          {alLimite && <span className="text-sm text-amber-700">Límite de tu plan alcanzado.</span>}
         </form>
       )}
 
@@ -94,7 +100,10 @@ const PanelAlertas = ({ lugar, alertas, disparadas = [], limite, onAgregar, onEl
       {disparadas.length > 0 && (
         <div className="mt-4 space-y-2" role="alert">
           {disparadas.map(({ alerta }) => (
-            <p key={alerta.id} className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+            <p
+              key={alerta.id}
+              className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800"
+            >
               ⚠️ {alerta.lugarNombre || 'Tu lugar'}:{' '}
               {TIPOS_ALERTA[alerta.condicion].descripcion(alerta.umbral)}
             </p>
@@ -110,7 +119,8 @@ const PanelAlertas = ({ lugar, alertas, disparadas = [], limite, onAgregar, onEl
               className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm"
             >
               <span className="text-gray-700">
-                {alerta.lugarNombre || 'Lugar'} · {TIPOS_ALERTA[alerta.condicion].descripcion(alerta.umbral)}
+                {alerta.lugarNombre || 'Lugar'} ·{' '}
+                {TIPOS_ALERTA[alerta.condicion].descripcion(alerta.umbral)}
               </span>
               <span className="flex items-center gap-2">
                 <button

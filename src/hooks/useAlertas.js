@@ -18,14 +18,24 @@ export const useAlertas = (limite = LIMITE_ALERTAS_GRATIS) => {
 
     actualizar([
       ...alertas,
-      { id, lugarId, lugarNombre: lugarNombre || '', condicion, umbral, activa: true, creadaEn: Date.now() }
+      {
+        id,
+        lugarId,
+        lugarNombre: lugarNombre || '',
+        condicion,
+        umbral,
+        activa: true,
+        creadaEn: Date.now()
+      }
     ]);
     return { agregada: true };
   };
 
   const eliminar = (id) => actualizar(alertas.filter((alerta) => alerta.id !== id));
   const alternar = (id) =>
-    actualizar(alertas.map((alerta) => (alerta.id === id ? { ...alerta, activa: !alerta.activa } : alerta)));
+    actualizar(
+      alertas.map((alerta) => (alerta.id === id ? { ...alerta, activa: !alerta.activa } : alerta))
+    );
 
   return { alertas, agregar, eliminar, alternar };
 };
