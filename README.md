@@ -1,150 +1,130 @@
 <div align="center">
 
-# 🌦️ WeatherNow
+# 🌦️ WeatherNow Decide
 
-### _Tu ventana al clima del mundo en tiempo real_
+### _Tu ventana al clima y tus mejores decisiones en tiempo real_
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Proxy-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)
 
-[🚀 Inicio Rápido](#-inicio-rápido) • [🧭 Rumbo](#-rumbo-del-producto) • [📁 Estructura](#-arquitectura-del-proyecto)
+[🚀 Inicio Rápido](#-inicio-rápido) • [✨ Características](#-características-principales) • [🛠️ Stack](#️-stack-tecnológico) • [📁 Arquitectura](#-arquitectura-del-proyecto) • [📝 SDD](#-cómo-trabajamos-sdd)
 
 </div>
 
 ---
 
-## 💡 ¿Qué es WeatherNow?
+## 💡 ¿Qué es WeatherNow Decide?
 
-**WeatherNow** es una aplicación web en español que consulta el clima de
-cualquier ciudad (OpenWeather) y lo presenta con tarjetas y gráficos.
+**WeatherNow Decide** es una aplicación web moderna (SPA) en español que no solo te muestra el clima, sino que lo traduce en **decisiones accionables**.
 
-Hoy es un **visor de datos**. El rumbo acordado es evolucionar a
-**WeatherNow Decide**: convertir el clima en **decisiones accionables**
-(¿salgo a correr?, ¿me protejo del sol?, ¿está el aire bien para mis
-alergias?), con lugares favoritos y alertas.
+¿Dudas si salir a correr? ¿No sabes si tender la ropa hoy? WeatherNow analiza datos meteorológicos, de calidad del aire y radiación UV para darte respuestas claras: **favorable**, **precaución** o **no recomendado**. Todo respaldado por una arquitectura robusta con un proxy seguro, soporte offline (PWA) y notificaciones de alerta.
 
-> 📌 Este repositorio se desarrolla con **Spec-Driven Development (SDD)**: la
-> especificación manda y el código debe decir la verdad. Ver [Rumbo](#-rumbo-del-producto).
+> 📌 Desarrollado bajo la metodología **Spec-Driven Development (SDD)**: la especificación manda. Ver más en la [Constitución](docs/constitution.md).
 
 ---
 
-## 🧭 Rumbo del producto
+## ✨ Características Principales
 
-El estado y el plan no se describen aquí "de memoria": viven en las specs.
+<details>
+<summary><b>🌍 Exploración Global y Favoritos</b> (Clic para expandir)</summary>
 
-| Spec                                                           | Qué es                                                            | Estado                 |
-| -------------------------------------------------------------- | ----------------------------------------------------------------- | ---------------------- |
-| [001 — Remediación base](specs/001-remediacion-base/spec.md)   | Sanear el proyecto: dependencias, build, bugs, errores, tests.    | Completada             |
-| [002 — WeatherNow Decide](specs/002-weathernow-decide/spec.md) | MVP de consumo con veredictos, salud, favoritos, alertas y proxy. | Completada (Fases A–F) |
-
-Artefactos SDD: [constitución](docs/constitution.md) ·
-[AGENTS.md](AGENTS.md) · [plan 001](specs/001-remediacion-base/plan.md) ·
-[tareas 001](specs/001-remediacion-base/tasks.md) ·
-[plan 002](specs/002-weathernow-decide/plan.md) ·
-[tareas 002](specs/002-weathernow-decide/tasks.md).
-
----
-
-## ✅ Estado real (no lo que nos gustaría)
-
-Lo que **hoy** funciona en un clon limpio (spec 001):
-
-- `npm install` instala dependencias declaradas (React 19, Vite 7, Tailwind 4).
-- `npm run dev`, `npm run build`, `npm run typecheck`, `npm test` y `npm run lint`
-  pasan.
-- Búsqueda por ciudad y "Mi ubicación", tarjetas, pronóstico de 5 días y gráficos.
-- Horas en la **zona horaria de la ciudad** consultada.
-- Errores específicos: ciudad no encontrada, API key, límite de peticiones,
-  conexión y permiso de ubicación.
-- `ErrorBoundary` (un fallo de render no deja la pantalla en blanco) y a11y básica.
-- Bundle inicial ~317 kB (los gráficos se cargan bajo demanda).
-
-Decisiones por actividad (spec 002, Fase B):
-
-- Panel "¿Puedo hacerlo hoy?" con veredicto (favorable / precaución / no
-  recomendado) para correr, ciclismo, caminar, evento al aire libre, tender la
-  ropa y lavar el auto.
-- Motivo legible, mejor franja del día y aviso de variables sin datos.
-
-Personalización (spec 002, Fase C):
-
-- Lugares favoritos (guardar, reordenar, eliminar), persistidos en el navegador.
+- Búsqueda instantánea de ciudades en todo el mundo.
+- Botón "Mi ubicación" para geolocalización rápida.
+- Gestión de **lugares favoritos** (guardar, reordenar y eliminar), que se persisten en el navegador.
 - Autocarga del último lugar consultado al abrir la app.
-- Selector de unidades °C/km/h ↔ °F/mph que afecta a toda la interfaz.
+</details>
 
-Proxy y datos (spec 002, Fase A):
+<details>
+<summary><b>🧭 Decisiones Inteligentes</b> (Clic para expandir)</summary>
 
-- El navegador solo habla con `/api`; la clave vive en el servidor
-  (`OPENWEATHER_API_KEY`), **no en el bundle**.
-- Caché con TTL (clima 10 min, pronóstico y aire 30 min) y rate limiting con
-  cabeceras `X-RateLimit-*`.
+- Veredictos claros para actividades diarias: *Correr, Ciclismo, Caminar, Eventos al aire libre, Tender la ropa, Lavar el auto*.
+- Motivos legibles y sugerencias de las mejores franjas del día para realizarlas.
+</details>
 
-Salud (spec 002, Fase D):
+<details>
+<summary><b>🌞 Salud y Medio Ambiente</b> (Clic para expandir)</summary>
 
-- UV, calidad del aire (US AQI) y polen desde Open-Meteo (sin clave), con avisos
-  para grupos sensibles y recomendación de protección solar.
-- UV y AQI entran en los veredictos por actividad.
+- Integración de **Índice UV, Calidad del Aire (US AQI) y Polen**.
+- Avisos específicos para grupos sensibles y recomendaciones de protección solar.
+</details>
 
-Alertas y planes (spec 002, Fase E):
+<details>
+<summary><b>🛡️ Arquitectura Segura y Offline</b> (Clic para expandir)</summary>
 
-- Alertas in-app por lugar (lluvia, viento, UV, calor, frío).
-- Plan gratuito (3 favoritos, 1 alerta, con publicidad) y premium (ilimitado,
-  sin publicidad); el pago real queda fuera del MVP.
+- **Proxy Seguro:** El cliente nunca conoce la clave de la API (`OPENWEATHER_API_KEY`). Toda petición pasa por un proxy propio en Node.
+- **PWA (Progressive Web App):** Soporte offline gracias a Service Workers. Si te quedas sin conexión, verás el último pronóstico guardado.
+- **Rendimiento:** Caché inteligente (10 min para clima, 30 min para pronóstico/aire) y rate limiting integrados.
+</details>
 
-Pulido (spec 002, Fase F):
+<details>
+<summary><b>🔔 Alertas y Personalización</b> (Clic para expandir)</summary>
 
-- PWA con service worker: shell offline y último dato con antigüedad visible.
-- SEO (Open Graph, manifiesto, contenido `<noscript>`) y métricas de uso del
-  proxy en `/api/metricas`.
-- Accesibilidad: enlace "Saltar al contenido", nombres accesibles, `aria-live` y
-  veredictos con texto + símbolo (no solo color).
-
-> ⚠️ **Secretos**: la clave va en `.env` como `OPENWEATHER_API_KEY`, que **no se
-> commitea** y, al no llevar prefijo `VITE_`, **no se incluye en el bundle**.
-> Nunca commitees tu `.env`.
+- Selector global de unidades: **°C/km/h ↔ °F/mph**.
+- Sistema de **alertas in-app** configurables para lluvia, viento, UV, calor y frío.
+</details>
 
 ---
 
 ## 🚀 Inicio Rápido
 
+Configura y arranca el entorno de desarrollo en menos de 2 minutos.
+
 ```bash
-# 1️⃣ Instalar dependencias
+# 1️⃣ Clona e instala las dependencias
 npm install
 
-# 2️⃣ Configurar la clave de OpenWeather (la usa el proxy)
-# Copia el ejemplo y rellena OPENWEATHER_API_KEY:
-#   cp .env.example .env
-# Obtén una gratis en: https://openweathermap.org/api
+# 2️⃣ Configura las variables de entorno
+# El proxy de Node requiere la clave de OpenWeather.
+cp .env.example .env
+# 🔑 Edita el archivo .env y añade tu OPENWEATHER_API_KEY.
 
-# 3️⃣ Lanzar (el proxy se monta automáticamente en /api con Vite)
+# 3️⃣ Inicia el servidor de desarrollo
+# Esto levanta Vite y monta automáticamente el proxy Node en /api
 npm run dev
-# 🎉 http://localhost:5173
 ```
 
-Para servir el proxy por separado (p. ej. fuera de Vite): `npm run api` levanta
-`api/servidor.js` en http://localhost:8787/api.
+> 🎉 ¡Listo! Abre **`http://localhost:5173`** en tu navegador.
+
+*Si necesitas correr el proxy por separado, usa `npm run api` (escuchará en `http://localhost:8787/api`).*
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-| Herramienta              | Versión       | Propósito                                                 |
-| ------------------------ | ------------- | --------------------------------------------------------- |
-| **React**                | 19            | UI con componentes y hooks                                |
-| **Vite**                 | 7             | Build y servidor de desarrollo                            |
-| **Tailwind CSS**         | 4 (CSS-first) | Estilos                                                   |
-| **Axios**                | 1.20          | Cliente HTTP                                              |
-| **Recharts**             | 3             | Gráficos (carga diferida)                                 |
-| **TypeScript**           | 5.9           | `typecheck` de los `.jsx` (`allowJs`, sin migrar a `.ts`) |
-| **Vitest** + Testing Lib | 5 / 16        | Tests unitarios y de componentes                          |
-| **ESLint** + Prettier    | 9 / 3         | Lint y formato                                            |
+Hemos elegido herramientas modernas para un rendimiento óptimo y una experiencia de desarrollo fluida.
+
+| Frontend | Herramienta | Backend & Ops | Herramienta |
+| :--- | :--- | :--- | :--- |
+| **Framework** | React 19 | **Servidor** | Node.js (Proxy custom) |
+| **Build Tool** | Vite 7 | **Cliente HTTP** | Axios 1.20 |
+| **Estilos** | Tailwind CSS 4 | **Tests** | Vitest 5 + RTL 16 |
+| **Gráficos** | Recharts 3 (Lazy) | **Calidad** | ESLint 9 + Prettier 3 |
+| **Tipado** | TypeScript (JSDoc) | **PWA** | Service Worker Nativo |
 
 ---
 
 ## 📁 Arquitectura del Proyecto
 
+Una estructura modular pensada para escalar.
+
+```mermaid
+graph TD
+    A[src/] --> B(componentes/ UI)
+    A --> C(dominio/ Lógica Pura)
+    A --> D(hooks/ Estado React)
+    A --> E(servicios/ API)
+    A --> F(almacenamiento/ LocalStorage)
+    G[api/] --> H(Proxy Node Seguro)
+    G --> I(Caché y Limiting)
 ```
+
+<details>
+<summary><b>Ver estructura de carpetas detallada</b></summary>
+
+```text
 📦 WeatherNow/
 ├── 📂 src/
 │   ├── componentes/   comunes · clima · decision · salud · favoritos · alertas · planes
@@ -156,67 +136,44 @@ Para servir el proxy por separado (p. ej. fuera de Vite): `npm run api` levanta
 │   ├── constantes/    configuración · mensajes · iconos · colores
 │   └── vistas/        PaginaPrincipal
 ├── 📂 tests/          Vitest + Testing Library
-├── 📂 api/            proxy: configuracion · proxy · cache · limite · metricas · proveedores
+├── 📂 api/            proxy Node: configuracion · cache · limite · metricas
 ├── 📂 public/         manifest.webmanifest · sw.js (PWA)
-├── 📂 docs/           constitution.md
-├── 📂 specs/          001-remediacion-base · 002-weathernow-decide
-├── 📄 .env.example    variables de entorno (sin secretos)
-├── 📄 vite.config.js  plugin React + proxy /api (dev)
-├── 📄 vitest.config.js  entorno de tests
-├── 📄 eslint.config.js  ESLint (flat config)
-└── 📄 tsconfig.json   typecheck de .jsx
+├── 📂 docs/ & specs/  Documentación SDD, planes y specs.
+└── 📄 vite.config.js, eslint.config.js, vitest.config.js...
 ```
+</details>
 
 ---
 
-## 🎮 Cómo Usar
+## 💻 Scripts Disponibles
 
-| Acción               | Resultado                                         |
-| -------------------- | ------------------------------------------------- |
-| 🔍 **Buscar ciudad** | Madrid, Tokyo, New York…                          |
-| 📍 **Mi ubicación**  | Clima de tu posición                              |
-| 🧭 **Decisiones**    | ¿Puedo correr, tender la ropa, lavar el auto…?    |
-| 🌞 **Salud**         | Índice UV, calidad del aire y polen               |
-| ⭐ **Favoritos**     | Guarda y reordena lugares                         |
-| 🔔 **Alertas**       | Aviso in-app por lluvia, viento, UV, calor o frío |
-| 📊 **Ver gráficos**  | Temperatura y humedad por franjas                 |
-| 📅 **Pronóstico**    | Próximos 5 días                                   |
-| 📱 **Sin conexión**  | Muestra el último dato guardado con su antigüedad |
+Automatiza las tareas comunes con estos comandos:
 
----
-
-## 🚀 Scripts
-
-```bash
-npm run dev           # Desarrollo con hot-reload
-npm run build         # typecheck + build de producción
-npm run typecheck     # tsc --noEmit
-npm test              # Vitest (una pasada)
-npm run test:watch    # Vitest en modo watch
-npm run lint          # ESLint
-npm run format        # Prettier --write
-npm run api           # Proxy Node en http://localhost:8787/api
-npm run preview       # Previsualizar la build
-```
+| Comando | Acción |
+| :--- | :--- |
+| `npm run dev` | Inicia servidor de desarrollo con hot-reload + proxy. |
+| `npm run build` | Compila para producción (`tsc --noEmit && vite build`). |
+| `npm test` | Ejecuta la suite de pruebas unitarias. |
+| `npm run typecheck` | Verifica tipos con TypeScript. |
+| `npm run lint` | Analiza el código con ESLint. |
+| `npm run format` | Aplica formato a todo el código con Prettier. |
+| `npm run api` | Levanta el proxy Node de forma independiente. |
 
 ---
 
-## 📝 Cómo se trabaja aquí (SDD)
+## 📝 Cómo trabajamos (SDD)
 
-1. **Constitución** → principios en `docs/constitution.md`.
-2. **Spec** → requisitos `RF-x` en notación EARS en `specs/NNN-nombre/spec.md`.
-3. **Plan** → decisiones técnicas en `plan.md`.
-4. **Tareas** → checklist verificable en `tasks.md`.
-5. **Implementación** una tarea a la vez; **validación** RF por RF.
+Este proyecto sigue la metodología **Spec-Driven Development**. No tocamos código sin antes definir qué vamos a hacer.
 
-Ningún comportamiento se implementa sin un `RF-x` que lo respalde.
+1. **Constitución:** Principios rectores en `docs/constitution.md`.
+2. **Especificación (Spec):** Requisitos en notación EARS (`specs/NNN-nombre/spec.md`).
+3. **Plan:** Diseño técnico de cómo resolverlo (`plan.md`).
+4. **Tareas:** Checklist de ejecución (`tasks.md`).
+5. **Validación:** Se implementa tarea a tarea y se cruza con los requerimientos originales.
+
+> 🤝 **¿Quieres colaborar?** ¡Lee primero nuestro [AGENTS.md](AGENTS.md) y la especificación activa!
 
 ---
-
 <div align="center">
-
-Hecho con ❤️ usando React + TailwindCSS
-
-[⬆️ Volver arriba](#-weathernow)
-
+Desarrollado con ❤️ combinando el poder de <b>React</b> y <b>Tailwind CSS 4</b>
 </div>
