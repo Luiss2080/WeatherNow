@@ -1,179 +1,163 @@
 <div align="center">
-
-# 🌦️ WeatherNow Decide
-
-### _Tu ventana al clima y tus mejores decisiones en tiempo real_
-
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-Proxy-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)
-
-[🚀 Inicio Rápido](#-inicio-rápido) • [✨ Características](#-características-principales) • [🛠️ Stack](#️-stack-tecnológico) • [📁 Arquitectura](#-arquitectura-del-proyecto) • [📝 SDD](#-cómo-trabajamos-sdd)
-
+  <img src="docs/assets/logo.svg" width="96" alt="Logo de WeatherNow" />
+  <h1>WeatherNow Decide</h1>
+  <p><b>Clima traducido a decisiones: ¿salgo a correr, tiendo la ropa, lavo el auto? SPA en español con proxy Node propio.</b></p>
+  <img src="https://img.shields.io/badge/estado-MVP-orange?style=for-the-badge" alt="Estado MVP" />
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19" />
+  <img src="https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 7" />
+  <img src="https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind 4" />
+  <img src="https://img.shields.io/badge/tests-109%20passing-brightgreen?style=for-the-badge" alt="109 tests" />
+  <img src="https://img.shields.io/badge/licencia-MIT-blue?style=for-the-badge" alt="Licencia MIT" />
+  <p>
+    <a href="#-inicio-rápido">Inicio rápido</a> ·
+    <a href="#-características">Características</a> ·
+    <a href="#-arquitectura">Arquitectura</a> ·
+    <a href="#-pruebas">Pruebas</a> ·
+    <a href="#-lo-que-todavía-no-existe">Limitaciones</a>
+  </p>
 </div>
 
----
+**WeatherNow Decide** es una aplicación web (React + Vite) que muestra el clima actual y el pronóstico de una ciudad y lo convierte en veredictos por actividad (favorable / precaución / no recomendado), junto con índice UV, calidad del aire y polen. Las llamadas a los proveedores pasan por un **proxy Node propio**, de modo que la clave de OpenWeather nunca llega al navegador. **No** es una app móvil nativa, no tiene cuentas de usuario ni pasarela de pago: el "plan Premium" es una simulación local.
 
-## 💡 ¿Qué es WeatherNow Decide?
+## 🎬 Vista rápida
 
-**WeatherNow Decide** es una aplicación web moderna (SPA) en español que no solo te muestra el clima, sino que lo traduce en **decisiones accionables**.
-
-¿Dudas si salir a correr? ¿No sabes si tender la ropa hoy? WeatherNow analiza datos meteorológicos, de calidad del aire y radiación UV para darte respuestas claras: **favorable**, **precaución** o **no recomendado**. Todo respaldado por una arquitectura robusta con un proxy seguro, soporte offline (PWA) y notificaciones de alerta.
-
-> 📌 Desarrollado bajo la metodología **Spec-Driven Development (SDD)**: la especificación manda. Ver más en la [Constitución](docs/constitution.md).
-
----
-
-## ✨ Características Principales
-
-<details>
-<summary><b>🌍 Exploración Global y Favoritos</b> (Clic para expandir)</summary>
-
-- Búsqueda instantánea de ciudades en todo el mundo.
-- Botón "Mi ubicación" para geolocalización rápida.
-- Gestión de **lugares favoritos** (guardar, reordenar y eliminar), que se persisten en el navegador.
-- Autocarga del último lugar consultado al abrir la app.
-</details>
-
-<details>
-<summary><b>🧭 Decisiones Inteligentes</b> (Clic para expandir)</summary>
-
-- Veredictos claros para actividades diarias: *Correr, Ciclismo, Caminar, Eventos al aire libre, Tender la ropa, Lavar el auto*.
-- Motivos legibles y sugerencias de las mejores franjas del día para realizarlas.
-</details>
-
-<details>
-<summary><b>🌞 Salud y Medio Ambiente</b> (Clic para expandir)</summary>
-
-- Integración de **Índice UV, Calidad del Aire (US AQI) y Polen**.
-- Avisos específicos para grupos sensibles y recomendaciones de protección solar.
-</details>
-
-<details>
-<summary><b>🛡️ Arquitectura Segura y Offline</b> (Clic para expandir)</summary>
-
-- **Proxy Seguro:** El cliente nunca conoce la clave de la API (`OPENWEATHER_API_KEY`). Toda petición pasa por un proxy propio en Node.
-- **PWA (Progressive Web App):** Soporte offline gracias a Service Workers. Si te quedas sin conexión, verás el último pronóstico guardado.
-- **Rendimiento:** Caché inteligente (10 min para clima, 30 min para pronóstico/aire) y rate limiting integrados.
-</details>
-
-<details>
-<summary><b>🔔 Alertas y Personalización</b> (Clic para expandir)</summary>
-
-- Selector global de unidades: **°C/km/h ↔ °F/mph**.
-- Sistema de **alertas in-app** configurables para lluvia, viento, UV, calor y frío.
-</details>
-
----
-
-## 🚀 Inicio Rápido
-
-Configura y arranca el entorno de desarrollo en menos de 2 minutos.
-
-```bash
-# 1️⃣ Clona e instala las dependencias
-npm install
-
-# 2️⃣ Configura las variables de entorno
-# El proxy de Node requiere la clave de OpenWeather.
-cp .env.example .env
-# 🔑 Edita el archivo .env y añade tu OPENWEATHER_API_KEY.
-
-# 3️⃣ Inicia el servidor de desarrollo
-# Esto levanta Vite y monta automáticamente el proxy Node en /api
-npm run dev
-```
-
-> 🎉 ¡Listo! Abre **`http://localhost:5173`** en tu navegador.
-
-*Si necesitas correr el proxy por separado, usa `npm run api` (escuchará en `http://localhost:8787/api`).*
-
----
-
-## 🛠️ Stack Tecnológico
-
-Hemos elegido herramientas modernas para un rendimiento óptimo y una experiencia de desarrollo fluida.
-
-| Frontend | Herramienta | Backend & Ops | Herramienta |
-| :--- | :--- | :--- | :--- |
-| **Framework** | React 19 | **Servidor** | Node.js (Proxy custom) |
-| **Build Tool** | Vite 7 | **Cliente HTTP** | Axios 1.20 |
-| **Estilos** | Tailwind CSS 4 | **Tests** | Vitest 5 + RTL 16 |
-| **Gráficos** | Recharts 3 (Lazy) | **Calidad** | ESLint 9 + Prettier 3 |
-| **Tipado** | TypeScript (JSDoc) | **PWA** | Service Worker Nativo |
-
----
-
-## 📁 Arquitectura del Proyecto
-
-Una estructura modular pensada para escalar.
-
-```mermaid
-graph TD
-    A[src/] --> B(componentes/ UI)
-    A --> C(dominio/ Lógica Pura)
-    A --> D(hooks/ Estado React)
-    A --> E(servicios/ API)
-    A --> F(almacenamiento/ LocalStorage)
-    G[api/] --> H(Proxy Node Seguro)
-    G --> I(Caché y Limiting)
-```
-
-<details>
-<summary><b>Ver estructura de carpetas detallada</b></summary>
+No hay capturas: el clima real requiere una clave de OpenWeather y acceso a internet, y no se muestran imágenes que no sean de la app corriendo.
 
 ```text
-📦 WeatherNow/
-├── 📂 src/
-│   ├── componentes/   comunes · clima · decision · salud · favoritos · alertas · planes
-│   ├── dominio/       decisión (actividades y franjas) · salud · alertas · planes
-│   ├── hooks/         useClima · usePronostico · useAire · useFavoritos · useAlertas…
-│   ├── servicios/     cliente del proxy (/api)
-│   ├── utilidades/    formateadores · transformadores · validadores · tiempo
-│   ├── almacenamiento/ favoritos · preferencias · alertas · instantánea (localStorage)
-│   ├── constantes/    configuración · mensajes · iconos · colores
-│   └── vistas/        PaginaPrincipal
-├── 📂 tests/          Vitest + Testing Library
-├── 📂 api/            proxy Node: configuracion · cache · limite · metricas
-├── 📂 public/         manifest.webmanifest · sw.js (PWA)
-├── 📂 docs/ & specs/  Documentación SDD, planes y specs.
-└── 📄 vite.config.js, eslint.config.js, vitest.config.js...
+Buscar ciudad (o "Mi ubicación")
+   └─> Proxy /api  ──> OpenWeather (clima, pronóstico) + Open-Meteo (aire, UV, polen)
+         └─> Tarjeta de clima · pronóstico · gráficos · panel de salud
+               └─> Decisiones: Correr / Ciclismo / Caminar / Evento / Ropa / Lavar auto
+                     └─> Alertas in-app · favoritos · unidades °C/km/h ↔ °F/mph
 ```
+
+## ✨ Características
+
+| Característica | Detalle |
+| :--- | :--- |
+| Búsqueda y ubicación | Búsqueda por ciudad y geolocalización del navegador; recuerda el último lugar consultado. |
+| Decisiones por actividad | Seis actividades (`correr`, `ciclismo`, `caminar`, `evento`, `ropa`, `lavarAuto`) evaluadas en `src/dominio/decision/`, con motivos y franjas horarias sugeridas. |
+| Salud y ambiente | Índice UV, US AQI, PM2.5/PM10 y polen (Open-Meteo, sin clave). |
+| Pronóstico y gráficos | Pronóstico diario y gráficos de temperatura y humedad con Recharts. |
+| Favoritos | Guardar, reordenar y eliminar lugares; se guardan en `localStorage`. |
+| Alertas in-app | Reglas configurables por umbral (lluvia, viento, UV, calor, frío) evaluadas en la propia página; no son notificaciones push. |
+| Unidades | Selector °C/km/h ↔ °F/mph. |
+| Planes (simulados) | Gratis: 3 favoritos y 1 alerta, con anuncio demo. Premium (demo): sin límites. Sin cobro real. |
+| PWA básica | `public/sw.js` precachea el shell y sirve red-primero con respaldo en caché; hay `manifest.webmanifest` y caché local del último clima. |
+| Proxy con caché y límite | TTL de 10 min (clima) y 30 min (pronóstico y aire), límite de 60 peticiones por 10 min por cliente y contadores de uso (`/api/metricas`, visibles solo en desarrollo). |
+
+## 🏗️ Arquitectura
+
+```mermaid
+flowchart LR
+  UI["src/vistas + componentes"] --> H["hooks/ (useClima, useAire, ...)"]
+  H --> S["servicios/ (axios)"]
+  S -->|"/api"| P["api/proxy.js"]
+  P --> L["limite.js"]
+  P --> C["cache.js"]
+  P --> OW["proveedores/openweather.js"]
+  P --> OM["proveedores/openmeteo.js"]
+  H --> D["dominio/ (decisión, salud, alertas, planes)"]
+  H --> A["almacenamiento/ (localStorage)"]
+```
+
+En desarrollo el proxy se monta dentro de Vite (`api/pluginVite.js`); para desplegar sin Vite existe `api/servidor.js`, que solo sirve el proxy (el front se compila aparte con `npm run build`).
+
+<details>
+<summary>Estructura de carpetas</summary>
+
+```text
+api/            proxy Node: configuracion, cache, limite, metricas, errores, proveedores/
+src/
+  componentes/  alertas, clima, comunes, decision, favoritos, formularios, graficos, planes, pronostico, salud
+  dominio/      alertas, decision, salud, planes (lógica pura)
+  hooks/        useClima, usePronostico, useAire, useFavoritos, useAlertas, ...
+  servicios/    cliente del proxy
+  almacenamiento/ favoritos, preferencias, alertas, último lugar, caché de clima
+  utilidades/   formateadores, transformadores, validadores, tiempo
+  vistas/       PaginaPrincipal
+tests/          Vitest + Testing Library
+public/         manifest.webmanifest, sw.js
+docs/, specs/   constitución y specs (Spec-Driven Development)
+```
+
 </details>
 
----
+## 🚀 Inicio rápido
 
-## 💻 Scripts Disponibles
+| Requisito | Detalle |
+| :--- | :--- |
+| Node.js | Con soporte de `--env-file-if-exists` (Node 20.6+; para `npm run api`) |
+| Clave OpenWeather | Gratuita, necesaria para clima y pronóstico |
+| Internet | Los proveedores son APIs externas |
 
-Automatiza las tareas comunes con estos comandos:
+```bash
+# 1. Instalar dependencias
+npm ci
+
+# 2. Configurar el proxy
+cp .env.example .env
+# editar .env y poner OPENWEATHER_API_KEY
+
+# 3. Arrancar (Vite + proxy montado en /api)
+npm run dev        # http://localhost:5173
+```
+
+Para correr el proxy por separado: `npm run api` (escucha en `http://localhost:8787/api`, configurable con `API_PUERTO`).
+
+<details>
+<summary>Variables de entorno (.env.example)</summary>
+
+| Variable | Uso |
+| :--- | :--- |
+| `OPENWEATHER_API_KEY` | Clave del proveedor; solo la lee el servidor (sin prefijo `VITE_`). |
+| `OPENWEATHER_URL_BASE`, `OPENWEATHER_IDIOMA`, `OPENWEATHER_UNIDADES` | Ajustes del proveedor (por defecto API 2.5, `es`, `metric`). |
+| `API_MAX_PETICIONES`, `API_VENTANA_MS` | Límite de peticiones por cliente. |
+| `OPENMETEO_URL_BASE`, `API_AIRE_TTL_MS` | Aire/UV/polen (sin clave) y su caché. |
+
+</details>
+
+<details>
+<summary>Scripts npm</summary>
 
 | Comando | Acción |
 | :--- | :--- |
-| `npm run dev` | Inicia servidor de desarrollo con hot-reload + proxy. |
-| `npm run build` | Compila para producción (`tsc --noEmit && vite build`). |
-| `npm test` | Ejecuta la suite de pruebas unitarias. |
-| `npm run typecheck` | Verifica tipos con TypeScript. |
-| `npm run lint` | Analiza el código con ESLint. |
-| `npm run format` | Aplica formato a todo el código con Prettier. |
-| `npm run api` | Levanta el proxy Node de forma independiente. |
+| `npm run dev` | Vite con hot-reload y proxy montado. |
+| `npm run build` | `tsc --noEmit && vite build`. |
+| `npm run preview` | Sirve el build. |
+| `npm test` | Vitest (una pasada). |
+| `npm run typecheck` / `lint` / `format:check` | Tipos, ESLint, Prettier. |
+| `npm run api` | Proxy Node independiente. |
 
----
+</details>
 
-## 📝 Cómo trabajamos (SDD)
+## 🧪 Pruebas
 
-Este proyecto sigue la metodología **Spec-Driven Development**. No tocamos código sin antes definir qué vamos a hacer.
+```bash
+npm test
+```
 
-1. **Constitución:** Principios rectores en `docs/constitution.md`.
-2. **Especificación (Spec):** Requisitos en notación EARS (`specs/NNN-nombre/spec.md`).
-3. **Plan:** Diseño técnico de cómo resolverlo (`plan.md`).
-4. **Tareas:** Checklist de ejecución (`tasks.md`).
-5. **Validación:** Se implementa tarea a tarea y se cruza con los requerimientos originales.
+**109 tests en 23 archivos** (Vitest 5 + Testing Library, jsdom) verificados al escribir este README, además de `npm run lint` sin errores. Cubren el proxy (caché, límite, métricas, errores), la lógica de decisión, alertas, aire/UV, almacenamiento, formateadores, transformadores, unidades, planes y los paneles principales. No hay tests E2E ni CI configurado.
 
-> 🤝 **¿Quieres colaborar?** ¡Lee primero nuestro [AGENTS.md](AGENTS.md) y la especificación activa!
+## 🔒 Seguridad
 
----
+- La clave de OpenWeather vive solo en el servidor; el navegador habla únicamente con `/api`.
+- Validación de coordenadas y ciudad (mínimo 2 caracteres) en el proxy y límite de peticiones por cliente.
+- `.env` está ignorado por git; solo se versiona `.env.example`.
+
+## 🚧 Lo que todavía no existe
+
+- Sin cuentas ni sincronización: favoritos, alertas y plan viven en `localStorage` del navegador.
+- Las alertas solo se muestran dentro de la app abierta; no hay notificaciones push.
+- Premium es una demo sin pasarela de pago; el anuncio es un marcador de posición.
+- TypeScript solo se usa para `tsc --noEmit` con `checkJs: false`: el código es JavaScript sin chequeo de tipos real.
+- Sin CI ni tests E2E; sin despliegue documentado (el proxy debe correr con Node junto al front compilado).
+- Clima y pronóstico dependen de un único proveedor (OpenWeather) y de su clave.
+
+## 📄 Licencia
+
+[MIT](LICENSE) © 2026 Luis Rocha.
+
 <div align="center">
-Desarrollado con ❤️ combinando el poder de <b>React</b> y <b>Tailwind CSS 4</b>
+  <sub>Hecho por Luiss2080 · Desarrollado con Spec-Driven Development (ver <a href="docs/constitution.md">constitución</a> y <code>specs/</code>)</sub>
 </div>
