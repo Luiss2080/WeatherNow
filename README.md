@@ -8,6 +8,9 @@
   <img src="https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind 4" />
   <img src="https://img.shields.io/badge/tests-109%20passing-brightgreen?style=for-the-badge" alt="109 tests" />
   <img src="https://img.shields.io/badge/licencia-MIT-blue?style=for-the-badge" alt="Licencia MIT" />
+  <img src="https://github.com/Luiss2080/WeatherNow/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://img.shields.io/github/last-commit/Luiss2080/WeatherNow" alt="Último commit" />
+  <img src="https://img.shields.io/badge/PRs-bienvenidos-brightgreen.svg" alt="PRs bienvenidos" />
   <p>
     <a href="#-inicio-rápido">Inicio rápido</a> ·
     <a href="#-características">Características</a> ·
@@ -137,7 +140,7 @@ Para correr el proxy por separado: `npm run api` (escucha en `http://localhost:8
 npm test
 ```
 
-**109 tests en 23 archivos** (Vitest 5 + Testing Library, jsdom) verificados al escribir este README, además de `npm run lint` sin errores. Cubren el proxy (caché, límite, métricas, errores), la lógica de decisión, alertas, aire/UV, almacenamiento, formateadores, transformadores, unidades, planes y los paneles principales. No hay tests E2E ni CI configurado.
+**109 tests en 23 archivos** (Vitest 5 + Testing Library, jsdom) verificados al escribir este README, además de `npm run lint` sin errores. Cubren el proxy (caché, límite, métricas, errores), la lógica de decisión, alertas, aire/UV, almacenamiento, formateadores, transformadores, unidades, planes y los paneles principales. No hay tests E2E. El CI de GitHub Actions ejecuta build y tests en cada push y PR a `main`.
 
 ## 🔒 Seguridad
 
@@ -151,8 +154,12 @@ npm test
 - Las alertas solo se muestran dentro de la app abierta; no hay notificaciones push.
 - Premium es una demo sin pasarela de pago; el anuncio es un marcador de posición.
 - TypeScript solo se usa para `tsc --noEmit` con `checkJs: false`: el código es JavaScript sin chequeo de tipos real.
-- Sin CI ni tests E2E; sin despliegue documentado (el proxy debe correr con Node junto al front compilado).
+- Sin tests E2E; sin despliegue documentado (el proxy debe correr con Node junto al front compilado).
 - Clima y pronóstico dependen de un único proveedor (OpenWeather) y de su clave.
+
+## 🤝 Contribuir
+
+¡Las contribuciones son bienvenidas! Leé la [guía de contribución](CONTRIBUTING.md) y el [código de conducta](CODE_OF_CONDUCT.md) antes de abrir un PR. Para bugs o ideas usá las [plantillas de issues](../../issues/new/choose); los problemas de seguridad se reportan según la [política de seguridad](SECURITY.md). ¿Dudas? Mirá [SUPPORT.md](SUPPORT.md). Los cambios por versión están en el [CHANGELOG](CHANGELOG.md).
 
 ## 📄 Licencia
 
